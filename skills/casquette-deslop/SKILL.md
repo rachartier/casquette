@@ -1,41 +1,36 @@
 ---
 name: casquette-deslop
 description: >-
-  Strips AI writing tells from prose, markdown, code comments, docstrings and
-  commit messages without changing their meaning or what the code does. Use when
-  asked to de-slop or humanize text, to remove em dashes, or when text or
-  comments read as AI-written.
+  Strips AI writing tells from text, comments, docstrings and commit
+  messages. Use when asked to de-slop or humanize text, or to remove em
+  dashes.
 ---
 # Remove AI slop
 
 Rewrite text so it reads like a knowledgeable person typing plainly, and
-comments so they read like a senior engineer wrote them. Only the wording
-moves: the meaning, and what the code does, stay fixed.
-
-The failure mode to avoid: rewriting so aggressively that facts drift, or
-"fixing" the prose by swapping one set of AI tics for another.
+comments so they read like a senior engineer wrote them.
 
 ## Workflow
 
 1. Read the file. If it is long (over ~400 lines), work section by section,
    since single-pass rewrites of long documents quietly compress the back
    half.
-2. Apply the edits below. In code, touch only comments, docstrings and
-   messages, never the code itself.
+2. Apply the edits below.
 3. Run the checks below on the result. Models emit these tells by habit, and
    the ones that survive a rewrite are the ones natural enough to slip past
    a reread; a search doesn't slip.
-4. Report the changes you were least sure about. They are where you came
-   closest to guessing at intent.
 
 ## Checks
+
+The checks use ripgrep (`rg`); without it, run `grep -nEiw` with the same
+pattern.
 
 ```bash
 # Dashes used as punctuation (numeric ranges like 2019–2024 are fine)
 rg -n '[—–]' <file>
 
 # Banned vocabulary (in code, only matches in comments and messages count)
-rg -n -i -w 'delve|tapestry|realm|landscape|testament to|at its core|leverage|utilize|robust|seamless|comprehensive|curated|elevate|unlock|supercharge|game-changer|cutting-edge|best-in-class|furthermore|moreover|additionally|crucial|vital|essential|powerful|it.s worth noting|it.s important to note' <file>
+rg -n -i -w 'delve|tapestry|realm|landscape|testament to|navigate the complexities|at its core|ever-evolving|today.s fast-paced|leverage|utilize|robust|seamless|comprehensive|curated|elevate|unlock|supercharge|game-changer|cutting-edge|best-in-class|furthermore|moreover|additionally|that said|it.s worth noting|it.s important to note|crucial|vital|essential|powerful' <file>
 ```
 
 In code, also check that the diff changes only comment, docstring and message
@@ -80,47 +75,36 @@ Output: We had two options. Rewrite the parser, or patch around it.
 - **Restatement.** A sentence that says the previous one again in different
   words. Delete the weaker one.
 
-## Vocabulary to remove
+## Vocabulary
 
-Register words: delve, tapestry, realm, landscape, testament to, navigate the
-complexities, at its core, in the ever-evolving world of, in today's
-fast-paced
+The word check above is the list of words to remove. Handle each match by
+its kind:
 
-Product-marketing words: leverage, utilize, robust, seamless, comprehensive,
-curated, elevate, unlock, supercharge, game-changer, cutting-edge,
-best-in-class
+- Register words and filler transitions (delve, furthermore…): cut them, or
+  rewrite the sentence plainly. Keep "that said" when a real contrast
+  follows.
+- Product-marketing words: use the plain word or name the property.
+  leverage → use, utilize → use, robust → (fast, well-tested, handles
+  malformed input), comprehensive → complete or (cut), seamless → (cut, or
+  say what doesn't break).
+- Filler emphasis (crucial, vital, essential, powerful): cut it, or replace
+  it with the reason the thing matters. "Key" counts only when it means
+  important, never in "API key" or "key-value".
 
-Filler transitions: furthermore, moreover, additionally, it's worth noting,
-it's important to note, that said (when it introduces nothing contrastive)
-
-Filler emphasis: crucial, vital, essential, key, powerful. Either cut them or
-replace them with the specific reason the thing matters.
-
-Assistant chatter: openers and sign-offs such as "Great question",
-"Certainly!", "Here's a…", "I hope this helps", "Let me know if you have any
-questions".
-
-Substitutions that usually work: leverage → use, utilize → use, robust →
-(name the property: fast, well-tested, handles malformed input),
-comprehensive → complete or (cut), seamless → (cut, or say what doesn't
-break).
+Also remove assistant chatter, which the check doesn't catch: openers and
+sign-offs such as "Great question", "Certainly!", "Here's a…", "I hope this
+helps", "Let me know if you have any questions".
 
 ## Code comments and docstrings
 
-Keep comments that say why: a constraint, a workaround, an issue reference,
-a decision a reader would otherwise undo. Remove or rewrite the rest:
+For comments, load `casquette-code-design` and apply its Comments rules.
+Also remove or rewrite:
 
-- **Narration** of what the next line does: `# Loop through the users`,
-  `# Return the result`.
-- **Change history**: `# Fixed the bug`, `# Updated to use X`,
-  `# New implementation`, `# As requested`. It belongs in the commit
-  message.
 - **Assistant voice**: I, we, let's, here we, now we, `Note:`, "This ensures
   that", "This function is responsible for", "Simply".
 - **Placeholders that hedge**: `# In a real implementation…`,
   `# For production, consider…`, `# You may want to…`. Delete them; if one
   marks a real gap, list it in the report.
-- **Section banners**: `# ===== Helpers =====`.
 - **Docstrings that restate the signature**: `get_user` documented as "Gets
   the user", or `Args: user_id (int): The user ID.` Keep only what a caller
   can't read from the name and types, and drop the docstring on a trivial
@@ -161,6 +145,9 @@ Cut "This commit…", file-by-file lists and AI attribution lines.
 
 ## Preserve exactly
 
+Only the wording moves. Keep unchanged:
+
+- In code, everything except comments, docstrings and messages
 - Code, inline code, YAML frontmatter, tables, link targets and anchor text
 - Heading hierarchy and document order
 - Every technical claim, number, name, version and command
@@ -181,7 +168,8 @@ When you can't rewrite a sentence without guessing at facts, leave it and
 say so in the report. A slightly stilted true sentence beats a smooth
 invented one.
 
-The word count should go down.
+The word count usually goes down; if it went up, look for filler you
+added.
 
 ## Output
 

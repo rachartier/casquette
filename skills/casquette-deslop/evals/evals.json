@@ -1,0 +1,33 @@
+[
+  {
+    "skills": ["casquette-deslop"],
+    "query": "De-slop this README.",
+    "files": ["A README with em dashes, 'leverage' and 'seamless', a 'not just X, it's Y' sentence, an intro that announces the document and a closing summary, and an install command with a version number"],
+    "expected_behavior": [
+      "Removes every em dash used as punctuation and every listed word, and the rg checks on the result find none",
+      "Rewrites the not-X-but-Y sentence as a plain statement and cuts the announcing intro or the summary",
+      "Keeps the install command, the version number and the heading order unchanged",
+      "Reports the changes it was least sure about"
+    ]
+  },
+  {
+    "skills": ["casquette-deslop", "casquette-code-design"],
+    "query": "Clean up the AI-sounding comments in src/report.py.",
+    "files": ["A Python module with narration comments, a '# In a real implementation…' placeholder, a docstring that restates the signature, and a log message '✅ Successfully saved report!' that a test asserts on"],
+    "expected_behavior": [
+      "Changes only comment, docstring and message lines, and runs the linter and tests",
+      "Removes the narration comments and the placeholder, and names the gap the placeholder pointed at in the report",
+      "Leaves the asserted log message unchanged, or updates the test with it and lists the change in the report"
+    ]
+  },
+  {
+    "skills": ["casquette-deslop"],
+    "query": "Can you de-slop my blog post?",
+    "files": ["A short post written by a person, with profanity, a running joke, unusual sentence rhythm, an API key example and a date range 2019–2024, and no AI tells"],
+    "expected_behavior": [
+      "Leaves the profanity, the joke and the rhythm as they are",
+      "Keeps 'API key' and the en dash in 2019–2024",
+      "Makes few or no edits and says the text already reads as written by a person"
+    ]
+  }
+]
