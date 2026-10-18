@@ -44,12 +44,14 @@ npx skills add rachartier/casquette -g --skill code-design --skill python-code
 > [!IMPORTANT]
 > `python-code` tells the agent to load `code-design` first. Install both.
 
-Or clone the repo and link the skills into Claude Code:
+Or clone the repo and link the skills into your agent's skills folder:
 
 ```sh
+skills_dir=~/.agents/skills  # your agent's skills folder
 git clone https://github.com/rachartier/casquette.git
+mkdir -p "$skills_dir"
 for skill in casquette/skills/*/; do
-    ln -s "$PWD/$skill" ~/.claude/skills/
+    ln -s "$PWD/$skill" "$skills_dir/"
 done
 ```
 
@@ -64,20 +66,21 @@ Start a new Python project called invoices.
 
 `python-tooling` runs and creates the project with its tooling config.
 
-Call a skill by name in Claude Code:
+Or name the skill in the request:
 
 ```text
-/readme
+Use the readme skill to rewrite README.md.
 ```
 
 ## Python check
 
 `python-code` verifies changed files with one ruff run: the project's own
 rules plus annotation, docstring, pyupgrade and size rules, with concise
-output. Run it from the project root:
+output. Run it from the project root, with the path to your installed
+skill:
 
 ```sh
-~/.claude/skills/python-code/scripts/check.sh src/invoices/parser.py
+~/.agents/skills/python-code/scripts/check.sh src/invoices/parser.py
 ```
 
 `python-tooling` writes the same rules into the project from
