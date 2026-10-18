@@ -1,4 +1,9 @@
-# casquette
+<p align="center">
+<img width="248" height="248" alt="casquette-logo-no-text" src="https://github.com/user-attachments/assets/79e64257-4dc4-40b9-ba24-29f7634552cb" />
+
+</p>
+
+# Casquette
 
 Agent skills for writing plain, simple Python, setting up its tooling,
 running work in devcontainers, and writing READMEs and comments without
