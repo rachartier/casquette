@@ -1,5 +1,5 @@
 ---
-name: python-tooling
+name: casquette-python-setup
 description: >-
   Sets up a Python project's tooling (uv, ruff, ty, pytest, pre-commit) and,
   if the user wants one, a devcontainer. Use when the user starts a new Python
@@ -25,7 +25,7 @@ hooks). To change a default, edit the template, not one project's copy.
 4. Copy `templates/pre-commit-config.yaml` to `.pre-commit-config.yaml`,
    then `uvx pre-commit install`.
 5. Ask whether the project needs a devcontainer. If yes, set it up with the
-   `capsule` skill.
+   `casquette-capsule` skill.
 
 ## Updating an existing project
 

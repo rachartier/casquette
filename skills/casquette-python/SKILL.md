@@ -1,5 +1,5 @@
 ---
-name: python-code
+name: casquette-python
 description: >-
   Python rules: uv, the ruff and ty check, data and module structure, I/O
   wiring, typing, docstrings and vertical spacing. Use when writing, editing or
@@ -7,8 +7,8 @@ description: >-
 ---
 # Python style
 
-Apply the `code-design` skill first; this skill adds only what is specific
-to Python. Like it, these rules apply to code you write or change.
+Apply the `casquette-code-design` skill first; this skill adds only what is
+specific to Python. Like it, these rules apply to code you write or change.
 
 ## Tooling
 
@@ -29,8 +29,9 @@ Verify in this order:
 Fix every finding on a line you wrote or changed. Leave findings on lines
 you didn't touch.
 
-To create a project or update its default config, use the `python-tooling`
-skill. Otherwise leave a project's ruff config as it is.
+To create a project or update its default config, use the
+`casquette-python-setup` skill. Otherwise leave a project's ruff config as it
+is.
 
 ## Structure
 

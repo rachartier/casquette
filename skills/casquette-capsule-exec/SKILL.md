@@ -1,5 +1,5 @@
 ---
-name: capsule-exec
+name: casquette-capsule-exec
 description: >-
   Run commands inside a project's devcontainer with `capsule exec`, so tests,
   builds and experiments happen in the container instead of on the host. Use
@@ -61,5 +61,5 @@ Leave the container running between calls; reuse is the point. When the user wan
 ## Failures
 
 - `devcontainer CLI not found`: the user must install it (`npm install -g @devcontainers/cli`).
-- `No .devcontainer/devcontainer.json found and no template name given`: pass a template name, or set the project up with the `capsule` skill.
+- `No .devcontainer/devcontainer.json found and no template name given`: pass a template name, or set the project up with the `casquette-capsule` skill.
 - `devcontainer up failed`: read the printed log. Common causes are a bad `devcontainer.json`, a failing `postCreateCommand`, or a stopped container runtime. `capsule doctor` checks the runtime and every template.

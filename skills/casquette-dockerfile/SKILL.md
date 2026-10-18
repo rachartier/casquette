@@ -1,5 +1,5 @@
 ---
-name: multi-stage-dockerfile
+name: casquette-dockerfile
 description: >-
   Writes or reviews multi-stage Dockerfiles that build in one stage and ship a
   small, non-root runtime image. Use when the user asks to create, review,

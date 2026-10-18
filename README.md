@@ -13,31 +13,31 @@ writing docs without filler.
 
 | Skill | Use it to |
 | --- | --- |
-| `code-design` | Apply design rules to any code change: abstractions, where code goes, dependencies, comments. |
-| `python-code` | Write, edit or review Python: structure, typing, docstrings, spacing. Builds on `code-design`. |
-| `python-tooling` | Set up a Python project with uv, ruff, ty, pytest and pre-commit, or update an existing one's config. |
-| `python-audit` | Audit a Python project with its tools, then pick which findings to fix. |
-| `casquette-review` | Review a change in any language against `code-design`, then pick which findings to fix. |
+| `casquette-code-design` | Apply design rules to any code change: abstractions, where code goes, dependencies, comments. |
+| `casquette-python` | Write, edit or review Python: structure, typing, docstrings, spacing. Builds on `casquette-code-design`. |
+| `casquette-python-setup` | Set up a Python project with uv, ruff, ty, pytest and pre-commit, or update an existing one's config. |
+| `casquette-python-audit` | Audit a Python project with its tools, then pick which findings to fix. |
+| `casquette-review` | Review a change in any language against `casquette-code-design`, then pick which findings to fix. |
 
 ### Containers
 
 | Skill | Use it to |
 | --- | --- |
-| `capsule` | Manage devcontainer templates and add a `.devcontainer/` to a project with [capsule](https://github.com/rachartier/capsule). |
-| `capsule-exec` | Run tests, builds and experiments inside a project's devcontainer. |
-| `multi-stage-dockerfile` | Write small, non-root, multi-stage Dockerfiles for any language. |
+| `casquette-capsule` | Manage devcontainer templates and add a `.devcontainer/` to a project with [capsule](https://github.com/rachartier/capsule). |
+| `casquette-capsule-exec` | Run tests, builds and experiments inside a project's devcontainer. |
+| `casquette-dockerfile` | Write small, non-root, multi-stage Dockerfiles for any language. |
 
 ### Writing
 
 | Skill | Use it to |
 | --- | --- |
-| `readme` | Write or rewrite a short, factual, code-first README. |
-| `remove-ai-slop` | Strip AI writing tells from prose, comments, docstrings and commit messages. |
+| `casquette-readme` | Write or rewrite a short, factual, code-first README. |
+| `casquette-deslop` | Strip AI writing tells from prose, comments, docstrings and commit messages. |
 
 ## Requirements
 
-- Python skills: [uv](https://docs.astral.sh/uv/). `python-audit` also
-  needs bash, git and Python 3.11+.
+- Python skills: [uv](https://docs.astral.sh/uv/).
+  `casquette-python-audit` also needs bash, git and Python 3.11+.
 - Container skills: [capsule](https://github.com/rachartier/capsule), the
   [devcontainer CLI](https://github.com/devcontainers/cli), and Docker or
   Podman.
@@ -56,14 +56,14 @@ Or pick some of them:
 
 ```sh
 npx skills add rachartier/casquette --list
-npx skills add rachartier/casquette -g --skill code-design --skill python-code
+npx skills add rachartier/casquette -g --skill casquette-code-design --skill casquette-python
 ```
 
 > [!IMPORTANT]
 > Some skills call others. Install them together:
-> `python-code` needs `code-design`; `python-audit` uses `python-code` and
-> `python-tooling`; `casquette-review` uses `code-design` and the language's
-> skill (`python-code`).
+> `casquette-python` needs `casquette-code-design`; `casquette-python-audit`
+> uses `casquette-python` and `casquette-python-setup`; `casquette-review`
+> uses `casquette-code-design` and the language's skill (`casquette-python`).
 
 Without the CLI, clone the repo and link the skills into your agent's skills
 folder:
@@ -89,11 +89,11 @@ Review my uncommitted changes.
 Or name the skill:
 
 ```text
-Use the readme skill to rewrite README.md.
+Use the casquette-readme skill to rewrite README.md.
 ```
 
 # Python Tooling defaults
-`python-tooling` writes its ruff, ty and pytest defaults from
-[`templates/pyproject.toml`](skills/python-tooling/templates/pyproject.toml)
+`casquette-python-setup` writes its ruff, ty and pytest defaults from
+[`templates/pyproject.toml`](skills/casquette-python-setup/templates/pyproject.toml)
 and its hooks from
-[`templates/pre-commit-config.yaml`](skills/python-tooling/templates/pre-commit-config.yaml).
+[`templates/pre-commit-config.yaml`](skills/casquette-python-setup/templates/pre-commit-config.yaml).

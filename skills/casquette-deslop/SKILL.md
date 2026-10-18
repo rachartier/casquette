@@ -1,5 +1,5 @@
 ---
-name: remove-ai-slop
+name: casquette-deslop
 description: >-
   Strips AI writing tells from prose, markdown, code comments, docstrings and
   commit messages without changing their meaning or what the code does. Use when

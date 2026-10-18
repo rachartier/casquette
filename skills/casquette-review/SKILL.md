@@ -1,7 +1,7 @@
 ---
 name: casquette-review
 description: >-
-  Reviews a code change for bugs, risks, missing tests and code-design
+  Reviews a code change for bugs, risks, missing tests and design-rule
   breaks. Use when asked to review a diff, commit, branch or PR.
 ---
 
@@ -15,17 +15,18 @@ Review the change as the developer who gets paged when it breaks.
   commit, a PR, files, `--base <ref>` for everything since that ref, or a
   concern such as security). Nothing named: the uncommitted changes, or the
   last commit when there are none.
-- Load `code-design`, and the language's skill when one exists
-  (`python-code` for Python). Their rules are the standard for this review,
-  applied to the changed lines.
+- Load `casquette-code-design`, and the language's skill when one exists
+  (`casquette-python` for Python). Their rules are the standard for this
+  review, applied to the changed lines.
 - Read the diff and the code it reaches. When a signature, return value or
   behavior changes, grep every caller, including files the diff doesn't
   touch.
 - Find the expected load in the repo (README, deploy config): one person
   running a script, or many users and processes at once.
 - Run the project's checks in check-only mode: the linter on the changed
-  files (for Python, `python-code`'s `scripts/check.sh`), the type checker,
-  and the tests that cover the change. Keep findings on changed lines.
+  files (for Python, `casquette-python`'s `scripts/check.sh`), the type
+  checker, and the tests that cover the change. Keep findings on changed
+  lines.
 
 ## 2. Look for
 
@@ -43,8 +44,8 @@ step 4 do the ranking. In order of importance:
    state that only grows, a query per item, quadratic work on large input.
 4. **Missing test:** risky new logic (a branch, a parser, money, security, a
    data write, a bug fix) with no test that fails when it breaks.
-5. **Design:** a break of a rule in `code-design` or the language skill;
-   cite the rule.
+5. **Design:** a break of a rule in `casquette-code-design` or the language
+   skill; cite the rule.
 
 ## 3. Check each finding
 
@@ -86,7 +87,7 @@ Each finding has four parts of one or two short sentences:
    - **Problem:** After the last failed retry it returns an empty list, so
      when the API is down the sync reports "0 new orders" and exits 0.
    - **Fix:** Raise after the last retry and delete the `return []` branch
-     (code-design: Fail Fast).
+     (casquette-code-design: Fail Fast).
    - **If we skip it:** Orders go missing until someone notices by hand.
 ```
 
@@ -104,7 +105,7 @@ your question tool if you have one. Change no code until the answer.
 
 ## 5. Fix and recheck
 
-Fix every chosen finding, most severe first, as `code-design` and the
+Fix every chosen finding, most severe first, as `casquette-code-design` and the
 language skill say, with a test for each bug fixed. Then rerun the checks
 from step 1 that the fixes touch. The work is done when they pass and no
 chosen finding remains. Report in a few lines what was fixed, and what

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Usage: check.sh <changed files>
-# The project's ruff rules plus python-code's annotation, docstring, syntax
-# and size rules. D401 is off on purpose: python-code wants descriptive
-# docstring summaries.
+# The project's ruff rules plus casquette-python's annotation, docstring,
+# syntax and size rules. D401 is off on purpose: casquette-python wants
+# descriptive docstring summaries.
 set -euo pipefail
 
 exec uv run ruff check --output-format concise \

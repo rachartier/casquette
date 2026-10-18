@@ -1,6 +1,6 @@
 [
   {
-    "skills": ["python-audit"],
+    "skills": ["casquette-python-audit"],
     "query": "Audit this project.",
     "files": ["A Python project with a failing test, an undefined name, a subprocess call with shell=True and a mutable default argument"],
     "expected_behavior": [
@@ -12,7 +12,7 @@
     ]
   },
   {
-    "skills": ["python-audit"],
+    "skills": ["casquette-python-audit"],
     "query": "Audit my uncommitted changes.",
     "files": ["A project whose pyproject.toml configures ruff with only E and F rules and mypy, plus two modified files, one of them with a mutable default argument"],
     "expected_behavior": [
@@ -25,7 +25,7 @@
     ]
   },
   {
-    "skills": ["python-audit"],
+    "skills": ["casquette-python-audit"],
     "query": "Fix the critical and high ones.",
     "files": ["The project and audit from the first scenario, after the table was shown"],
     "expected_behavior": [
@@ -35,7 +35,7 @@
     ]
   },
   {
-    "skills": ["python-audit"],
+    "skills": ["casquette-python-audit"],
     "query": "Grade this project.",
     "files": ["A Python project whose only complexity finding is a 60-line function that dispatches CLI subcommands through one flat match statement"],
     "expected_behavior": [

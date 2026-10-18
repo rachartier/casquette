@@ -1,5 +1,5 @@
 ---
-name: capsule
+name: casquette-capsule
 description: >-
   Set up and manage devcontainers with the capsule CLI: store and edit
   devcontainer templates, add a `.devcontainer/` to a project with `capsule
@@ -8,7 +8,7 @@ description: >-
   capsule, wants a devcontainer for a project, wants to add, fork, update or
   troubleshoot a template, or wants their dotfiles, SSH keys, display or env
   inside every container. For running commands inside a container, use
-  `capsule-exec`.
+  `casquette-capsule-exec`.
 ---
 # capsule
 

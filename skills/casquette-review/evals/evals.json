@@ -1,30 +1,30 @@
 [
   {
-    "skills": ["casquette-review", "code-design", "python-code"],
+    "skills": ["casquette-review", "casquette-code-design", "casquette-python"],
     "query": "Review my changes.",
     "files": ["A Python project with uncommitted changes: a fetch function that returns [] after its last failed retry, and a new OrderSourceFactory with a single product"],
     "expected_behavior": [
-      "Reviews the uncommitted changes and loads code-design and python-code",
+      "Reviews the uncommitted changes and loads casquette-code-design and casquette-python",
       "Runs the linter, type checker and related tests without changing any file",
       "Reports the empty list after the last retry as Must fix, with the concrete case of an API outage reported as success",
-      "Reports the factory as a design finding that cites the code-design rule it breaks",
+      "Reports the factory as a design finding that cites the casquette-code-design rule it breaks",
       "Gives every finding the four parts, states the assumed load and ends with a verdict",
       "Asks which findings to fix, recommending the Must fix ones, and changes no code before the answer"
     ]
   },
   {
-    "skills": ["casquette-review", "code-design"],
+    "skills": ["casquette-review", "casquette-code-design"],
     "query": "Review this branch against main.",
     "files": ["A TypeScript project whose branch changes parseAmount to return cents instead of euros; one caller outside the diff still divides the result by 100"],
     "expected_behavior": [
       "Reviews the changes since main",
       "Greps every caller of parseAmount, including files the branch doesn't touch",
       "Reports the untouched caller as Must fix, with an example amount that comes out wrong",
-      "Applies the code-design rules without looking for a TypeScript language skill that doesn't exist"
+      "Applies the casquette-code-design rules without looking for a TypeScript language skill that doesn't exist"
     ]
   },
   {
-    "skills": ["casquette-review", "code-design", "python-code"],
+    "skills": ["casquette-review", "casquette-code-design", "casquette-python"],
     "query": "Fix 1 and 2.",
     "files": ["The project and review from the first scenario, after the findings were shown"],
     "expected_behavior": [
@@ -35,7 +35,7 @@
     ]
   },
   {
-    "skills": ["casquette-review", "code-design", "python-code"],
+    "skills": ["casquette-review", "casquette-code-design", "casquette-python"],
     "query": "Review my last commit.",
     "files": ["A Python project whose last commit adds a tested pure function and its call site, with no rule broken and all checks passing"],
     "expected_behavior": [
@@ -44,7 +44,7 @@
     ]
   },
   {
-    "skills": ["casquette-review", "code-design", "python-code"],
+    "skills": ["casquette-review", "casquette-code-design", "casquette-python"],
     "query": "Review my changes.",
     "files": ["A single-user CLI whose change loads a whole CSV into memory, with a comment saying files stay under 10 MB, and a README describing local use on small exports"],
     "expected_behavior": [

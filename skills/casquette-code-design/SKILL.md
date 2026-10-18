@@ -1,5 +1,5 @@
 ---
-name: code-design
+name: casquette-code-design
 description: >-
   Design rules for code changes in any language: when an abstraction is
   justified, where new code goes, choosing a dependency, and comments. Use when

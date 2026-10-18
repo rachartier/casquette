@@ -1,5 +1,5 @@
 ---
-name: python-audit
+name: casquette-python-audit
 description: >-
   Audits and grades a Python project with its quality tools (lint, types,
   complexity, dead code, security, tests) and a read of the riskiest code.
@@ -59,7 +59,8 @@ When the project has its own ruff config, the lint section's header says
 project doesn't select as `(audit baseline)`, for example
 `ruff B006 (audit baseline)`. Then compare the project's selected rules with
 `<skill>/assets/ruff.toml` and add one INFO row naming the missing rule
-families, with the fix "update the config with the `python-tooling` skill".
+families, with the fix "update the config with the
+`casquette-python-setup` skill".
 
 The report is three parts, in this order:
 
@@ -84,7 +85,7 @@ answer.
 ## 4. Fix and recheck
 
 Fix every chosen row, most severe first, without stopping to check in
-between. Write the fixes as the `python-code` skill says, in the project's
+between. Write the fixes as the `casquette-python` skill says, in the project's
 style, with a test for each bug fixed. Use the tools' own fixers where they
 apply (`ruff check --fix`, `ruff format`). Then rerun only the tools the
 fixes touched, by name. The work is done when no chosen row shows in the

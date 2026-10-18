@@ -1,6 +1,6 @@
 # Used only when the project has no ruff configuration of its own.
-# Mirrors the [tool.ruff] sections of python-tooling's templates/pyproject.toml;
-# change both together.
+# Mirrors the [tool.ruff] sections of casquette-python-setup's
+# templates/pyproject.toml; change both together.
 output-format = "concise"
 
 [lint]

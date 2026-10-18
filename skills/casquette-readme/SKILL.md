@@ -1,5 +1,5 @@
 ---
-name: readme
+name: casquette-readme
 description: >-
   Write or rewrite a project README that is short, factual and code-first, with
   no marketing filler. Use when asked to create, rewrite, update or improve a
