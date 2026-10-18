@@ -14,6 +14,16 @@ description: >-
 
 Capsule keeps devcontainer templates in one store and runs them in any project through the `devcontainer` CLI. Run `capsule --help` or `capsule <cmd> --help` for exact flags; this skill covers what the help text does not say.
 
+## Check that capsule is installed
+
+Run `command -v capsule` first. When it prints a path, carry on. When it prints nothing, tell the user capsule is missing and offer to install it with the official script (Linux and macOS, installs to `~/.local/bin`), or from the [releases page](https://github.com/rachartier/capsule/releases). Run the script only once the user agrees, then check `command -v capsule` again:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/rachartier/capsule/main/install.sh | bash
+```
+
+If the check still prints nothing, `~/.local/bin` is not on the user's `PATH`.
+
 ## Where things live
 
 - Template store: `~/.config/capsule/templates/<name>/` (or under `$XDG_CONFIG_HOME`). Each template is a directory with `devcontainer.json`, plus any files it references (`Dockerfile`, scripts), plus capsule's own `capsule.toml` (description, author, git provenance, uid/gid override).

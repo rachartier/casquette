@@ -13,6 +13,8 @@ description: >-
 
 `capsule exec` starts (or reuses) the devcontainer for the current directory, runs one command in it, and returns that command's output and exit code. It is the non-interactive way in: use it for every command you want to run inside the container.
 
+Run `command -v capsule` first. When it prints nothing, capsule is not installed: follow "Check that capsule is installed" in the `casquette-capsule` skill before anything else.
+
 ## Pick the target
 
 Run from the project root. The container is keyed by the host directory, so the same directory always reaches the same container, and a different directory creates a new one.
