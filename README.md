@@ -33,6 +33,7 @@ writing docs without filler.
 | --- | --- |
 | `casquette-readme` | Write or rewrite a short, factual, code-first README. |
 | `casquette-deslop` | Strip AI writing tells from prose, comments, docstrings and commit messages. |
+| `casquette-skill-writing` | Write, revise or slim down an agent skill, with evals. |
 
 ## Requirements
 
