@@ -20,6 +20,8 @@ select = [
     "PGH003", # rule-specific type-checker ignores only
     "C90",    # mccabe complexity (size signal)
     "PLR09",  # too many statements/args/branches/returns (size signal)
+    "PLE",    # pylint errors
+    "PLW",    # pylint warnings (loop variable overwritten, global statement...)
 ]
 ignore = [
     "E501", # line length is the formatter's job
