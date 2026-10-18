@@ -83,9 +83,9 @@ Prefer an existing library over writing your own when it:
   the project's language version, issues get answers
 - is established: widely used, documented, with type information where the
   language has it
-- has an enterprise-safe license: MIT, BSD, Apache-2.0, ISC, PSF or
-  MPL-2.0. Ask first for LGPL. Never use GPL, AGPL, SSPL, BUSL/BSL, Commons
-  Clause, custom or missing licenses.
+- has a permissive license (MIT, BSD, Apache-2.0, ISC, PSF, MPL-2.0). If a
+  better fit has another license, name it and its license to the user and
+  let them choose. Never use a package with no license.
 
 Check license and activity on the package index or the repository, not from
 memory. Prefer a library already in the dependency tree over a new one that
