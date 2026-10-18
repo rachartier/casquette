@@ -7,7 +7,7 @@
 # also adds the bug rules in BASELINE_RULES to a project's own config. Tools
 # come from the project's .venv first, then the PATH, then uvx.
 #
-# Usage: review.sh [--changed | --base REF] [TOOL...]
+# Usage: audit.sh [--changed | --base REF] [TOOL...]
 #   TOOL is any of: lint format types complexity deadcode duplicates security tests
 #   --changed / --base REF limit lint, format, types, complexity and security
 #   to the Python files changed (uncommitted, or since REF).
@@ -43,7 +43,7 @@ existing=()
 for target in "${targets[@]}"; do [[ -e "$target" ]] && existing+=("$target"); done
 targets=("${existing[@]}")
 if ((${#targets[@]} == 0)); then
-  echo "No Python file to review in this scope."
+  echo "No Python file to audit in this scope."
   exit 0
 fi
 
@@ -116,7 +116,7 @@ lint() {
   # A project config decides style, but the bug rules always run on top of it.
   # Rules selected on the command line override the config's ignores, so those
   # are passed again.
-  local ignores config source="project config + review baseline"
+  local ignores config source="project config + audit baseline"
   ignores="$(project_ruff_ignores)"
   config=(--extend-select "$BASELINE_RULES" --extend-ignore "B008${ignores:+,$ignores}")
   if ! has_config ruff ruff.toml .ruff.toml; then

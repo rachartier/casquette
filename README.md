@@ -16,7 +16,7 @@ writing docs without filler.
 | `code-design` | Apply design rules to any code change: abstractions, where code goes, dependencies, comments. |
 | `python-code` | Write, edit or review Python: structure, typing, docstrings, spacing. Builds on `code-design`. |
 | `python-tooling` | Set up a Python project with uv, ruff, ty, pytest and pre-commit, or update an existing one's config. |
-| `python-review` | Audit a Python project or its recent changes, then pick which findings to fix. |
+| `python-audit` | Audit a Python project with its tools, then pick which findings to fix. |
 
 ### Containers
 
@@ -35,7 +35,7 @@ writing docs without filler.
 
 ## Requirements
 
-- Python skills: [uv](https://docs.astral.sh/uv/). `python-review` also
+- Python skills: [uv](https://docs.astral.sh/uv/). `python-audit` also
   needs bash, git and Python 3.11+.
 - Container skills: [capsule](https://github.com/rachartier/capsule), the
   [devcontainer CLI](https://github.com/devcontainers/cli), and Docker or
@@ -60,7 +60,7 @@ npx skills add rachartier/casquette -g --skill code-design --skill python-code
 
 > [!IMPORTANT]
 > Some skills call others. Install them together:
-> `python-code` needs `code-design`; `python-review` uses `python-code` and
+> `python-code` needs `code-design`; `python-audit` uses `python-code` and
 > `python-tooling`.
 
 Without the CLI, clone the repo and link the skills into your agent's skills
