@@ -1,0 +1,37 @@
+[
+  {
+    "skills": ["python-review"],
+    "query": "Review this project.",
+    "files": ["A Python project with a failing test, an undefined name, a subprocess call with shell=True and a mutable default argument"],
+    "expected_behavior": [
+      "Runs scripts/review.sh once, without rerunning tools with other options",
+      "Shows the test result and grades, then one table sorted from CRITICAL to INFO",
+      "Lists the failing test, the undefined name and the shell=True call as CRITICAL, and the mutable default as HIGH",
+      "Reports ruff S602 and bandit B602 as one row",
+      "Asks which rows to fix with 'Critical and high (Recommended)' first, and changes no code before the answer"
+    ]
+  },
+  {
+    "skills": ["python-review"],
+    "query": "Check the quality of my uncommitted changes.",
+    "files": ["A project whose pyproject.toml configures ruff with only E and F rules and mypy, plus two modified files, one of them with a mutable default argument"],
+    "expected_behavior": [
+      "Runs scripts/review.sh --changed",
+      "The output shows ruff with the project config plus the review baseline, and mypy instead of ty",
+      "Reports no docstring or naming findings, since the project's ruff rules don't include them",
+      "Reports the mutable default with Source 'ruff B006 (review baseline)'",
+      "Adds one INFO row naming the rule families the project's ruff config leaves out",
+      "Only lists findings in the two changed files, apart from failing tests and the INFO row"
+    ]
+  },
+  {
+    "skills": ["python-review"],
+    "query": "Fix the critical and high ones.",
+    "files": ["The project and review from the first scenario, after the table was shown"],
+    "expected_behavior": [
+      "Fixes only the CRITICAL and HIGH rows and adds a test for each bug fixed",
+      "Reruns only the affected tools, for example review.sh lint types tests",
+      "Reports which rows are fixed and any that couldn't be"
+    ]
+  }
+]

@@ -16,6 +16,7 @@ filler.
 | `code-design` | Apply design rules to any code change: when an abstraction is justified, where new code goes, choosing a dependency, comments. |
 | `python-code` | Write, edit or review Python: data and module structure, I/O wiring, typing, docstrings, vertical spacing, and a ruff check script. Builds on `code-design`. |
 | `python-tooling` | Set up a new Python project (uv, ruff, ty, pytest, pre-commit) or bring an existing one's config up to these defaults. |
+| `python-review` | Audit a Python project or its recent changes with its linters, type checker and tests, then pick which findings to fix by severity. |
 | `capsule` | Manage devcontainer templates and add a `.devcontainer/` to a project with the [capsule](https://github.com/rachartier/capsule) CLI. |
 | `capsule-exec` | Run tests, builds and experiments inside a project's devcontainer with `capsule exec`. |
 | `multi-stage-dockerfile` | Write multi-stage Dockerfiles for any language. |
@@ -25,6 +26,7 @@ filler.
 ## Requirements
 
 - [uv](https://docs.astral.sh/uv/) for `python-code` and `python-tooling`
+- bash, git, Python 3.11+ and uv for `python-review`
 - [capsule](https://github.com/rachartier/capsule), the
   [devcontainer CLI](https://github.com/devcontainers/cli) and Docker or
   Podman for `capsule` and `capsule-exec`
