@@ -1,0 +1,33 @@
+[
+  {
+    "skills": ["casquette-dockerfile"],
+    "query": "Containerize this app.",
+    "files": ["A Node 22 Express API with package.json, package-lock.json, an .nvmrc, a build script that outputs dist/, and a server listening on port 3000"],
+    "expected_behavior": [
+      "Takes the Node version, commands and port from the project files",
+      "Writes a multi-stage Dockerfile whose last stage runs node dist/index.js in exec form as a numeric non-root user",
+      "Installs with npm ci, copying package.json and package-lock.json before the source",
+      "Writes a .dockerignore that excludes node_modules, .git and .env files",
+      "Runs the Verify checks, including a detached run that serves on port 3000 and stops in seconds, and reports the image size"
+    ]
+  },
+  {
+    "skills": ["casquette-dockerfile"],
+    "query": "Review my Dockerfile.",
+    "files": ["A single-stage Python Dockerfile that runs as root, uses shell-form CMD, and passes an API token through ARG"],
+    "expected_behavior": [
+      "Lists the root user, the shell-form CMD and the token in ARG, each with its fix",
+      "Explains that the token stays in the image history and suggests a secret mount",
+      "Changes no file before the user answers"
+    ]
+  },
+  {
+    "skills": ["casquette-dockerfile"],
+    "query": "Can you check this Dockerfile is fine?",
+    "files": ["A Go service with a multi-stage Dockerfile: CGO_ENABLED=0 build, distroless/static:nonroot runtime, exec-form ENTRYPOINT, a .dockerignore and pinned versions"],
+    "expected_behavior": [
+      "Reports that the Dockerfile follows the rules, with the checks it ran or couldn't run",
+      "Proposes no change to base images, stage names or layer layout"
+    ]
+  }
+]
