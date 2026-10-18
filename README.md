@@ -62,11 +62,12 @@ npx skills add rachartier/casquette -g --skill casquette-code-design --skill cas
 
 > [!IMPORTANT]
 > Some skills call others. Install them together:
-> `casquette-python` needs `casquette-code-design`; `casquette-python-audit`
-> uses `casquette-python` and `casquette-python-setup`; `casquette-review`
-> uses `casquette-code-design` and the language's skill (`casquette-python`);
-> `casquette-deslop` uses `casquette-code-design` for code comments;
-> `casquette-capsule-exec` uses `casquette-capsule` to install capsule.
+>
+> - `casquette-python` needs `casquette-code-design`
+> - `casquette-python-audit` uses `casquette-python` and `casquette-python-setup`
+> - `casquette-review` uses `casquette-code-design` and the language's skill (`casquette-python`)
+> - `casquette-deslop` uses `casquette-code-design` for code comments
+> - `casquette-capsule-exec` uses `casquette-capsule` to install capsule
 
 Without the CLI, clone the repo and link the skills into your agent's skills
 folder:
