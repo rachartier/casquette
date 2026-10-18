@@ -1,47 +1,57 @@
 <p align="center">
 <img width="248" height="248" alt="casquette-logo-no-text" src="https://github.com/user-attachments/assets/79e64257-4dc4-40b9-ba24-29f7634552cb" />
-
 </p>
 
 # Casquette
 
-Agent skills for writing plain, simple Python, setting up its tooling,
-running work in devcontainers, and writing READMEs and comments without
-filler.
+Agent skills for writing plain Python, running work in devcontainers, and
+writing docs without filler.
 
 ## Skills
 
+### Python
+
 | Skill | Use it to |
 | --- | --- |
-| `code-design` | Apply design rules to any code change: when an abstraction is justified, where new code goes, choosing a dependency, comments. |
-| `python-code` | Write, edit or review Python: data and module structure, I/O wiring, typing, docstrings, vertical spacing, and a ruff check script. Builds on `code-design`. |
-| `python-tooling` | Set up a new Python project (uv, ruff, ty, pytest, pre-commit) or bring an existing one's config up to these defaults. |
-| `python-review` | Audit a Python project or its recent changes with its linters, type checker and tests, then pick which findings to fix by severity. |
-| `capsule` | Manage devcontainer templates and add a `.devcontainer/` to a project with the [capsule](https://github.com/rachartier/capsule) CLI. |
-| `capsule-exec` | Run tests, builds and experiments inside a project's devcontainer with `capsule exec`. |
-| `multi-stage-dockerfile` | Write multi-stage Dockerfiles for any language. |
-| `readme` | Write or rewrite a README that is short, factual and code-first. |
-| `remove-ai-slop` | Strip AI writing tells from prose, comments, docstrings and commit messages without changing their meaning. |
+| `code-design` | Apply design rules to any code change: abstractions, where code goes, dependencies, comments. |
+| `python-code` | Write, edit or review Python: structure, typing, docstrings, spacing. Builds on `code-design`. |
+| `python-tooling` | Set up a Python project with uv, ruff, ty, pytest and pre-commit, or update an existing one's config. |
+| `python-review` | Audit a Python project or its recent changes, then pick which findings to fix. |
+
+### Containers
+
+| Skill | Use it to |
+| --- | --- |
+| `capsule` | Manage devcontainer templates and add a `.devcontainer/` to a project with [capsule](https://github.com/rachartier/capsule). |
+| `capsule-exec` | Run tests, builds and experiments inside a project's devcontainer. |
+| `multi-stage-dockerfile` | Write small, non-root, multi-stage Dockerfiles for any language. |
+
+### Writing
+
+| Skill | Use it to |
+| --- | --- |
+| `readme` | Write or rewrite a short, factual, code-first README. |
+| `remove-ai-slop` | Strip AI writing tells from prose, comments, docstrings and commit messages. |
 
 ## Requirements
 
-- [uv](https://docs.astral.sh/uv/) for `python-code` and `python-tooling`
-- bash, git, Python 3.11+ and uv for `python-review`
-- [capsule](https://github.com/rachartier/capsule), the
-  [devcontainer CLI](https://github.com/devcontainers/cli) and Docker or
-  Podman for `capsule` and `capsule-exec`
+- Python skills: [uv](https://docs.astral.sh/uv/). `python-review` also
+  needs bash, git and Python 3.11+.
+- Container skills: [capsule](https://github.com/rachartier/capsule), the
+  [devcontainer CLI](https://github.com/devcontainers/cli), and Docker or
+  Podman.
 
 ## Installation
 
 Install every skill for your user with the
-[skills](https://github.com/vercel-labs/skills) CLI (drop `-g` to install
-into the current project):
+[skills](https://github.com/vercel-labs/skills) CLI. Drop `-g` to install
+into the current project.
 
 ```sh
 npx skills add rachartier/casquette -g
 ```
 
-List the skills, then install only some of them:
+Or pick some of them:
 
 ```sh
 npx skills add rachartier/casquette --list
@@ -49,9 +59,12 @@ npx skills add rachartier/casquette -g --skill code-design --skill python-code
 ```
 
 > [!IMPORTANT]
-> `python-code` tells the agent to load `code-design` first. Install both.
+> Some skills call others. Install them together:
+> `python-code` needs `code-design`; `python-review` uses `python-code` and
+> `python-tooling`.
 
-Or clone the repo and link the skills into your agent's skills folder:
+Without the CLI, clone the repo and link the skills into your agent's skills
+folder:
 
 ```sh
 skills_dir=~/.agents/skills  # your agent's skills folder
@@ -64,33 +77,21 @@ done
 
 ## Usage
 
-The agent picks a skill when the task matches its description. Ask for the
-task:
+Ask for the task. The agent picks the skill whose description matches:
 
 ```text
 Start a new Python project called invoices.
+Review my uncommitted changes.
 ```
 
-`python-tooling` runs and creates the project with its tooling config.
-
-Or name the skill in the request:
+Or name the skill:
 
 ```text
 Use the readme skill to rewrite README.md.
 ```
 
-## Python check
-
-`python-code` verifies changed files with one ruff run: the project's own
-rules plus annotation, docstring, pyupgrade and size rules, with concise
-output. Run it from the project root, with the path to your installed
-skill:
-
-```sh
-~/.agents/skills/python-code/scripts/check.sh src/invoices/parser.py
-```
-
-`python-tooling` writes the same rules into the project from
-[`skills/python-tooling/templates/pyproject.toml`](skills/python-tooling/templates/pyproject.toml),
-with hooks from
-[`skills/python-tooling/templates/pre-commit-config.yaml`](skills/python-tooling/templates/pre-commit-config.yaml).
+# Python Tooling defaults
+`python-tooling` writes its ruff, ty and pytest defaults from
+[`templates/pyproject.toml`](skills/python-tooling/templates/pyproject.toml)
+and its hooks from
+[`templates/pre-commit-config.yaml`](skills/python-tooling/templates/pre-commit-config.yaml).
