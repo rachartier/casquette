@@ -1,38 +1,44 @@
 ---
 name: casquette-commit
 description: >-
-  Commits work in Conventional Commits form, one commit per concern. Use when
-  asked to commit, make commits, or split changes into commits.
+  Commits work in Conventional Commits form, one logical change per commit. Use
+  when asked to commit, make commits, or split changes into commits.
 ---
 # Casquette commit
 
-Commit only what the user asked for. Don't amend, rebase, reset or push unless
-the user asks.
+The user's instructions override this skill. Commit only what was asked; don't
+amend, rebase, reset or push unless asked.
 
-## 1. Read the changes
+## Split
 
-Run `git status` and `git diff`, staged and unstaged. Group the changed files
-by concern: a fix, a feature, a refactor, a doc change. A refactor that a
-feature needs gets its own commit, placed before the feature.
+Read `git status` and the staged and unstaged diff. Make one commit per logical
+change, with its tests and docs. Give these their own commit: a
+behavior-preserving refactor a feature needs (placed before it), and moves,
+renames or reformatting. Otherwise, one commit.
 
-If a file's concern is unclear, ask which commit it belongs to, and stage
-nothing for it until the user answers.
+Run the project's test or build command once per commit (say so in the report
+if there is none). If a split would make a commit fail it, keep those changes
+together.
 
-## 2. Write each message
+If a file's purpose is unclear, or its hunks can't be cleanly separated, ask
+which commit gets it and leave it unstaged until the user answers.
 
-Subject: `type(scope): summary`, imperative, lowercase, no trailing period,
-72 characters or fewer including the type. Use one of `feat`, `fix`,
-`refactor`, `docs`, `test` or `chore`: `fix` for a bug fix, `feat` for new
-behavior, `refactor` when behavior stays the same.
+## Message
 
-Body: optional. Write one only when the subject can't say why the change was
-made, or what it does beyond the diff: a reason, a side effect, a surprising
-consequence. Skip it for a self-explanatory change such as a typo, a rename or
-a doc wording fix. When you write one, give the reason, not a restatement of
-the diff. Keep it to one or two short paragraphs wrapped at 72 characters, with
-a blank line after the subject. Use bullets only for several distinct reasons.
+`type(scope): summary`, with type one of `feat`, `fix`, `refactor`, `docs`,
+`test`, `chore`, chosen by the main effect. Lowercase, imperative, no period,
+72 characters max in total. If the subject needs "and", split the commit.
 
-With a body:
+Breaking change: add `!` to the type of its main effect (removing a public
+function is `feat!`, not `refactor!`) and a footer
+`BREAKING CHANGE: <what breaks and what to do instead>`.
+
+Default to no body. Add one, wrapped at 72, only if it tells a reader of the
+subject and diff something they can't see there: why the change was needed, or
+a side effect. Never write a body that restates the subject, lists the changed
+files or functions, describes what the diff shows, or claims generic benefits
+("improves readability", "for maintainability"). If every sentence fails this
+test, omit the body.
 
 ```text
 refactor(orders): extract the retry loop from fetch_orders
@@ -40,31 +46,19 @@ refactor(orders): extract the retry loop from fetch_orders
 The retry rule was mixed with HTTP parsing, so it could not be tested alone.
 ```
 
-Without one, the subject says it all:
+No body needed:
 
 ```text
 docs(readme): fix typo in invoice sentence
 ```
 
-## 3. Stage and commit one concern at a time
+## Stage
 
-Stage each file by name with `git add <path>...`. Never use `git add .` or
-`git add -A`. Run `git diff --staged --stat` and check that it lists only this
-commit's files, then commit. Repeat for the next concern.
+Stage by path with `git add <path>...`, never `git add .` or `git add -A`.
 
-When one file holds two concerns, stage only this concern's hunks:
+To commit only some hunks of a file: `git diff --output=<tmp> -- <file>` with
+`<tmp>` outside the repo, delete the other changes' hunks from `<tmp>`, then
+`git apply --cached <tmp>` and delete `<tmp>`.
 
-1. `git diff --output=<patch> -- <file>`, with `<patch>` a temporary file
-   outside the repo. Git writes the file itself, so no shell redirect is needed.
-2. Edit `<patch>` to delete every hunk that belongs to another concern, keeping
-   the file headers.
-3. `git apply --cached <patch>`, then delete `<patch>`.
-4. Check that `git diff --staged` shows only this concern before committing.
-
-If the hunks can't be separated cleanly, ask the user which commit gets them.
-
-## 4. Check
-
-Run `git status`. The work is done when every change the user asked for is
-committed, the files you asked about are still unstaged, and nothing else is
-left staged. Each subject passes step 2. Report each commit's hash and subject.
+When done, only the files you asked about are unstaged and nothing else is
+staged. Report each commit's hash and subject.

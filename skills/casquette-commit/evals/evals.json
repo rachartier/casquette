@@ -60,5 +60,25 @@
       "Says there is nothing to commit",
       "Makes no commit, not even an empty one"
     ]
+  },
+  {
+    "skills": ["casquette-commit"],
+    "query": "Commit my changes.",
+    "files": ["Uncommitted work that adds a `mul` function to `calc.py`, a test for it in `tests/test_calc.py`, and a README section describing it: one purpose, with tests and docs"],
+    "expected_behavior": [
+      "Makes one commit that holds calc.py, tests/test_calc.py and README.md together",
+      "Gives that commit a subject starting `feat(`, not a separate `test(` or `docs(` commit",
+      "Stages each file by name, with no git add . or git add -A"
+    ]
+  },
+  {
+    "skills": ["casquette-commit"],
+    "query": "Commit the removal of load_legacy.",
+    "files": ["Uncommitted change to `api.py` that deletes the public function `load_legacy`, which callers must now replace with `load`"],
+    "expected_behavior": [
+      "Makes one commit for api.py",
+      "Marks the subject as breaking with `!` before the colon",
+      "Adds a `BREAKING CHANGE:` footer after a blank line that says what breaks and what to use instead"
+    ]
   }
 ]

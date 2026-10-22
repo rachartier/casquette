@@ -39,7 +39,7 @@ writing docs without filler.
 
 | Skill | Use it to |
 | --- | --- |
-| `casquette-commit` | Split work into Conventional Commits, one per concern, staging files by name. |
+| `casquette-commit` | Split work into Conventional Commits, one logical change per commit, staging files by name. |
 
 ## Requirements
 
