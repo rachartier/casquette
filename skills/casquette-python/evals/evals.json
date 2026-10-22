@@ -1,0 +1,32 @@
+[
+  {
+    "skills": ["casquette-python"],
+    "query": "Add a function that totals the orders in a CSV file.",
+    "files": ["A src-layout Python project with requires-python >=3.12, ruff and ty configured, and an empty orders.py"],
+    "expected_behavior": [
+      "Keeps file reading in main or the caller, and the total in a function that takes rows and returns a number",
+      "Uses built-in generics and X | None, with full annotations and a Google-style docstring with Args and Returns",
+      "Separates the steps of each function body with one blank line",
+      "Runs `<skill>/scripts/check.sh` on the changed files, then the type checker and `uv run pytest`"
+    ]
+  },
+  {
+    "skills": ["casquette-python"],
+    "query": "Now have it fetch the orders from an HTTP API instead.",
+    "files": ["The project after the previous change, where the total function takes rows"],
+    "expected_behavior": [
+      "Parses the response body in a pure function that the tests call directly",
+      "Tests the request and error handling through one seam, with a small fake instead of mock.patch on a module path",
+      "Adds no DI framework, service locator or seam that no test uses"
+    ]
+  },
+  {
+    "skills": ["casquette-python"],
+    "query": "What does this module do?",
+    "files": ["A Python module that already follows the rules"],
+    "expected_behavior": [
+      "Explains the module in a few sentences",
+      "Changes no file and reports no lint or style finding"
+    ]
+  }
+]

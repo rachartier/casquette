@@ -1,14 +1,17 @@
 ---
 name: casquette-python
 description: >-
-  Python rules: uv, the ruff and ty check, data and module structure, I/O
-  wiring, typing, docstrings and vertical spacing. Use when writing, editing or
-  reviewing Python code.
+  Sets the Python rules: uv, the ruff and ty check, data and module structure,
+  I/O wiring, typing, docstrings and vertical spacing. Use when writing,
+  editing or reviewing Python code.
 ---
 # Python style
 
 Apply the `casquette-code-design` skill first; this skill adds only what is
 specific to Python. Like it, these rules apply to code you write or change.
+
+Before writing a function that reads files or the network, split out the logic
+that takes data and returns data, with the I/O around it (see I/O and wiring).
 
 ## Tooling
 
@@ -19,7 +22,7 @@ Verify in this order:
 
 1. Reread each function you wrote against Vertical spacing below.
 2. If the project has a formatter, run it on the changed files.
-3. Run `scripts/check.sh <changed files>` from this skill's folder: one ruff
+3. Run `<skill>/scripts/check.sh <changed files>`, where `<skill>` is the folder holding this SKILL.md: one ruff
    run with the project's rules plus this skill's annotation, docstring,
    syntax and size rules.
 4. Run the project's type checker (`uvx ty check --output-format concise`
