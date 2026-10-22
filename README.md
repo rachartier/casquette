@@ -13,7 +13,7 @@ writing docs without filler.
 
 | Skill | Use it to |
 | --- | --- |
-| `casquette-code-design` | Apply design rules to any code change: abstractions, where code goes, dependencies, comments. |
+| `casquette-code-design` | Apply design, scope and test rules to any code change, and run the checks that finish it. |
 | `casquette-python` | Write, edit or review Python: structure, typing, docstrings, spacing. Builds on `casquette-code-design`. |
 | `casquette-python-setup` | Set up a Python project with uv, ruff, ty, pytest and pre-commit, or update an existing one's config. |
 | `casquette-python-audit` | Audit a Python project with its tools, then pick which findings to fix. |

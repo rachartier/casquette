@@ -1,9 +1,10 @@
 ---
 name: casquette-code-design
 description: >-
-  Design rules for code changes in any language: when an abstraction is
-  justified, where new code goes, choosing a dependency, and comments. Use when
-  writing, editing or reviewing code.
+  Rules for code changes in any language: scope, when an abstraction is
+  justified, where new code goes, tests, choosing a dependency, comments, and
+  the checks that finish a change. Use when writing, editing, testing or
+  reviewing code.
 ---
 # Code design
 
@@ -11,6 +12,12 @@ These rules apply to code you write or change. When reviewing, apply them to
 the diff, not to the code around it.
 
 ## Principles
+
+Choose the simplest solution that fully solves the problem: the one a new
+teammate understands in one read. When rules conflict, the order is:
+correctness and the explicit requirement, fail fast, separation of concerns,
+KISS/YAGNI, DRY. If a requirement forces a violation, do what was asked and
+flag it in one sentence.
 
 - **KISS / YAGNI**: before adding an abstraction, name the second concrete
   use that needs it today. If there is none, don't add it.
@@ -21,9 +28,10 @@ the diff, not to the code around it.
   replaces.
 - **Separation of Concerns**: keep I/O, business logic, orchestration and
   presentation apart, so business logic is testable without the network,
-  filesystem or UI. Separate them as functions first. Move one to its own
-  module when the file passes ~300 lines or another module needs it. A
-  small tool or script is one module and one test module.
+  filesystem or UI. Separate them as functions first. Give a concern its own
+  module when no module owns it yet, or when the owning file passes ~300 lines
+  or another module needs it. A small tool or script is one module and one
+  test module.
 - **DRY**: tolerate small, incidental repetition rather than a premature
   abstraction.
 - **Fail Fast**: validate at the boundary (user input, external systems) and
@@ -65,7 +73,7 @@ Before adding behavior (anything beyond a local fix):
    change (it would take on a second responsibility, a name misleads, the
    piece you need is buried in a larger function), first refactor just that
    code without changing behavior: this preparatory refactoring is part of
-   the task. Don't do a larger refactor; propose it at the end.
+   the task.
 5. On a change that spans several modules, name the next request the
    change makes likely. Where two designs cost the same today, pick the one
    that makes that request easy (where a responsibility lives, how data is
@@ -73,6 +81,18 @@ Before adding behavior (anything beyond a local fix):
 
 Don't impose an architecture (layered, hexagonal, clean architecture)
 unless the project already uses one or the user asks.
+
+## Scope of a change
+
+- Every changed line traces to the request. Add no feature, file, doc,
+  comment, docstring, annotation or refactor outside the touched code; name
+  such extras at the end instead.
+- Read what the change touches and what depends on it, not the whole repo.
+- Report an unrelated problem (a bug, a broken test) in one line instead of
+  fixing it.
+- Solve the general problem. Don't hard-code a value or add a special case
+  that only makes a test pass. If a test looks wrong, or the task can't be
+  done as asked, say so.
 
 ## Dependencies
 
@@ -90,6 +110,31 @@ Prefer an existing library over writing your own when it:
 Check license and activity on the package index or the repository, not from
 memory. Prefer a library already in the dependency tree over a new one that
 does the same.
+
+## Reporting a change
+
+After a code change, add a line to the report only when it applies: a new
+dependency (name, reason, license), a parameter added only so a test can
+verify the change, or a size signal (long function, many parameters) you kept,
+with why.
+
+## Tests
+
+- Add a test only when the change needs one to be verified, and make it check
+  behavior, not mirror the implementation. Cover the boundaries, ties and error
+  paths the request implies.
+- Never weaken a check to pass it: no deleting, skipping or loosening a test,
+  and no suppression or config change that only hides a finding.
+- Change an existing test only when the requested behavior changes it, and say
+  which test and why.
+
+## Done
+
+A change is done when the linter, type checker and relevant tests pass, or
+you've said which one couldn't run and why, and the temporary files you
+created are deleted. Run the checks once after the edits; after a fix, rerun
+only what failed. Don't check after every edit unless a skill such as `tdd`
+runs its own loop.
 
 ## Comments
 
