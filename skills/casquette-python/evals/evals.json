@@ -2,18 +2,19 @@
   {
     "skills": ["casquette-python"],
     "query": "Add a function that totals the orders in a CSV file.",
-    "files": ["A src-layout Python project with requires-python >=3.12, ruff and ty configured, and an empty orders.py"],
+    "files": ["A src-layout Python project with requires-python >=3.12, ruff and ty configured, an empty orders.py, and an empty tests folder"],
     "expected_behavior": [
       "Keeps file reading in main or the caller, and the total in a function that takes rows and returns a number",
       "Uses built-in generics and X | None, with full annotations and a Google-style docstring with Args and Returns",
       "Separates the steps of each function body with one blank line",
-      "Runs `<skill>/scripts/check.sh` on the changed files, then the type checker and `uv run pytest`"
+      "Adds a test of the total function that checks its result, not its implementation",
+      "Runs the casquette-python scripts/check.sh on the changed files, then the type checker and uv run pytest"
     ]
   },
   {
     "skills": ["casquette-python"],
-    "query": "Now have it fetch the orders from an HTTP API instead.",
-    "files": ["The project after the previous change, where the total function takes rows"],
+    "query": "Have the total fetch its orders from an HTTP API instead of taking rows.",
+    "files": ["A src-layout Python project with requires-python >=3.12, ruff and ty configured, and an orders.py that already has a frozen Order dataclass and total(rows: Sequence[Order]) -> Decimal, with a docstring and a passing test"],
     "expected_behavior": [
       "Parses the response body in a pure function that the tests call directly",
       "Tests the request and error handling through one seam, with a small fake instead of mock.patch on a module path",
@@ -22,11 +23,21 @@
   },
   {
     "skills": ["casquette-python"],
-    "query": "What does this module do?",
-    "files": ["A Python module that already follows the rules"],
+    "query": "Review orders.py.",
+    "files": ["A Python module that already follows the rules, with no finding to report"],
     "expected_behavior": [
-      "Explains the module in a few sentences",
-      "Changes no file and reports no lint or style finding"
+      "Reports no finding",
+      "Changes no file"
+    ]
+  },
+  {
+    "skills": ["casquette-python"],
+    "query": "Add a refund branch to total_orders in orders.py.",
+    "files": ["A src-layout project with requires-python >=3.12 and an orders.py whose total_orders is a cohesive, annotated, documented function with complexity exactly 10, the C901 limit, so one more branch exceeds it"],
+    "expected_behavior": [
+      "Adds the branch to total_orders without splitting it into a new function or class",
+      "Adds no # noqa comment to the function",
+      "Names the kept size signal in one line in the final reply"
     ]
   }
 ]
