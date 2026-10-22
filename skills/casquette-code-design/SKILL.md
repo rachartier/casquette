@@ -88,6 +88,9 @@ unless the project already uses one or the user asks.
 - Every changed line traces to the request. Add no feature, file, doc,
   comment, docstring, annotation or refactor outside the touched code; name
   such extras at the end instead.
+- A function you add, or whose signature you change, gets its annotations and
+  docstring. Other functions in the file stay as they are, even one whose body
+  you edit.
 - Read what the change touches and what depends on it, not the whole repo.
 - Report an unrelated problem (a bug, a broken test) in one line instead of
   fixing it.
