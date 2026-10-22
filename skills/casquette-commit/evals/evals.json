@@ -8,6 +8,7 @@
       "Makes the refactor commit first, with a subject starting `refactor(` that names the moved helper",
       "Makes a second commit for the fix, with a subject starting `fix(`",
       "Stages each commit's files by name, with no git add . or git add -A",
+      "Writes a body only where the subject can't say why and the work shows the reason, and never restates the diff",
       "When loader.py holds both concerns, the refactor commit holds only the extraction and the fix commit holds only the blank-line filter",
       "Gives each subject as imperative and lowercase, with no trailing period and 72 characters or fewer",
       "Reports both commit hashes and subjects, and pushes nothing"
@@ -19,7 +20,8 @@
     "files": ["A repo with uncommitted changes: a rounding bug fix in `billing/rounding.py` and a typo fix in `README.md`"],
     "expected_behavior": [
       "Makes one commit for billing/rounding.py and a separate docs commit for README.md",
-      "Stages README.md by name, not with git add -A"
+      "Stages README.md by name, not with git add -A",
+      "Gives the docs commit no body, since its subject says it all"
     ]
   },
   {
