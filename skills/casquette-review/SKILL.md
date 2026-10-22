@@ -13,11 +13,12 @@ Review the change as the developer who gets paged when it breaks.
 ## 1. Read the change
 
 - Scope and focus: what the user names (uncommitted or staged work, a
-  commit, a PR, files, `--base <ref>` for everything since that ref, or a
+  commit, a PR, files, a ref for everything since that ref, or a
   concern such as security). Nothing named: the changes since the
   merge-base with the default branch (`git merge-base HEAD main`, or `master`
   when the repo has no `main`). When there is no such branch, use the
-  uncommitted changes, or the last commit when there are none.
+  uncommitted changes, or the last commit when there are none. On the default
+  branch the merge-base is `HEAD`, so this means the uncommitted changes.
 - Load `casquette-code-design`, and the language's skill when one exists
   (`casquette-python` for Python). Their rules are the standard for this
   review, applied to the changed lines.
