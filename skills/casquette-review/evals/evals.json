@@ -26,7 +26,7 @@
   {
     "skills": ["casquette-review", "casquette-code-design", "casquette-python"],
     "query": "Fix 1 and 2.",
-    "files": ["The project and review from the first scenario, after the findings were shown"],
+    "files": ["The project from the first scenario, plus this earlier review: 1. Must fix: fetch_orders returns [] after its last failed retry, so an outage reads as '0 new orders'. 2. Design: OrderSourceFactory in sync/sources.py has a single product, against the casquette-code-design rule on factories for one case."],
     "expected_behavior": [
       "Fixes only findings 1 and 2, most severe first",
       "Adds a test that fails on the old empty-list behavior",
