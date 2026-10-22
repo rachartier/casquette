@@ -17,7 +17,9 @@ set -uo pipefail
 SKILL="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MAX_LINES="${MAX_LINES:-40}"
 ALL_TOOLS=(lint format types complexity deadcode duplicates security tests)
+# Tests and build output are skipped by the code checks; pytest covers the tests.
 EXCLUDED="tests,test,.venv,venv,build,dist"
+# Bug rules every project gets, since they catch crashes whatever its style config.
 BASELINE_RULES="F,E9,B,PLE,PLW,BLE"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
