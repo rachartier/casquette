@@ -1,13 +1,10 @@
 ---
 name: casquette-capsule-exec
 description: >-
-  Run commands inside a project's devcontainer with `capsule exec`, so tests,
-  builds and experiments happen in the container instead of on the host. Use
-  when the user says to try, test, build or reproduce something "in the
-  container", "in the devcontainer" or "with capsule", when a toolchain or
-  dependency is missing on the host but a capsule template or
-  `.devcontainer/` provides it, or when you want a clean, disposable Linux
-  environment to verify a change.
+  Runs commands in a project's devcontainer with `capsule exec`, not on the
+  host. Use when the user asks to test, build or reproduce something in the
+  container or with capsule, when a host toolchain is missing, or when a clean
+  Linux environment is needed to verify a change.
 ---
 # capsule exec
 
@@ -50,7 +47,7 @@ The first call for a directory pulls the image and runs `postCreateCommand`: all
 
 ## Recreating
 
-`--recreate` destroys the container and creates a new one from the current `devcontainer.json`. `--rebuild` does the same and also rebuilds a Dockerfile-based image without the build cache. Use either only when `devcontainer.json` or the capsule mounts changed, the image is stale, or the container is broken. Both wipe all installed state, so tell the user before you use them. Put it before `--`: `capsule exec -q --recreate -- true`.
+`--recreate` destroys the container and creates a new one from the current `devcontainer.json`. `--rebuild` does the same and also rebuilds a Dockerfile-based image without the build cache. Use either only when `devcontainer.json` or the capsule mounts changed, the image is stale, or the container is broken. Both wipe all installed state, so get the user's agreement first; see the Apply changes rule in `casquette-capsule`. Put it before `--`: `capsule exec -q --recreate -- true`.
 
 ## Stay non-interactive
 

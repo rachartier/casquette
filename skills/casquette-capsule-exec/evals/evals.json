@@ -1,0 +1,32 @@
+[
+  {
+    "skills": ["casquette-capsule-exec"],
+    "query": "Run the tests in the container.",
+    "files": ["A Python project with .devcontainer/devcontainer.json and a failing pytest test in tests/test_parse.py"],
+    "expected_behavior": [
+      "Runs `command -v capsule` first",
+      "Calls `capsule exec -q -- pytest` from the project root, with `--` and no template name",
+      "Reports the exit code and the failing test from the command's output",
+      "Changes no file"
+    ]
+  },
+  {
+    "skills": ["casquette-capsule-exec"],
+    "query": "pytest says hypothesis is missing. Install it there and run again.",
+    "files": ["The project from the previous turn, where hypothesis is not installed in the container"],
+    "expected_behavior": [
+      "Installs hypothesis inside the container with one `capsule exec -q -- sh -c '...'` call",
+      "Reruns pytest in a separate `capsule exec -q -- pytest` call and reports its exit code",
+      "Installs nothing on the host"
+    ]
+  },
+  {
+    "skills": ["casquette-capsule-exec"],
+    "query": "Run the tests on my machine, not in the container.",
+    "files": ["The same project, with a working Python environment on the host"],
+    "expected_behavior": [
+      "Runs pytest on the host",
+      "Makes no `capsule exec` call"
+    ]
+  }
+]
