@@ -6,7 +6,7 @@
     "expected_behavior": [
       "Runs `uv init --package invoices` and raises requires-python to >=3.12 if uv set it lower",
       "Runs `uv add --dev ruff ty pytest`",
-      "Appends templates/pyproject.toml to pyproject.toml and creates tests/test_invoices.py with one smoke test",
+      "Appends templates/pyproject.toml to pyproject.toml and creates no test file or docstrings",
       "Copies the pre-commit template to .pre-commit-config.yaml and runs `uvx pre-commit install`",
       "Asks whether the project needs a devcontainer, and sets none up unasked"
     ]

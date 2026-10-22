@@ -19,9 +19,7 @@ hooks). To change a default, edit the template, not one project's copy.
    `requires-python` to `>=3.12` if uv set it lower, or set the version the
    user names; ruff and ty read their target version from it.
 2. `uv add --dev ruff ty pytest`.
-3. Append `templates/pyproject.toml` to `pyproject.toml`. Give the generated
-   `__init__.py` and its `main` docstrings, and create
-   `tests/test_<name>.py` with one smoke test that calls `main()`.
+3. Append `templates/pyproject.toml` to `pyproject.toml`.
 4. Copy `templates/pre-commit-config.yaml` to `.pre-commit-config.yaml`,
    then `uvx pre-commit install`.
 5. Ask whether the project needs a devcontainer. If yes, set it up with the
@@ -55,7 +53,7 @@ hooks). To change a default, edit the template, not one project's copy.
 
 ## Done
 
-The project is set up when `uv run ruff check`, `uv run ruff format --check`,
-`uv run ty check` and `uv run pytest` pass, and on a new project
-`uvx pre-commit run --all-files` too. On an update, list the findings the
-user chose to leave instead.
+The project is set up when `uv run ruff check`, `uv run ruff format --check`
+and `uv run ty check` pass, and `uv run pytest` passes or collects no tests.
+On a new project, `uvx pre-commit run --all-files` must pass too. On an
+update, list the findings the user chose to leave instead.
