@@ -22,13 +22,13 @@ Review the change as the developer who gets paged when it breaks.
 - Load `casquette-code-design`, and the language's skill when one exists
   (`casquette-python` for Python). Their rules are the standard for this
   review, applied to the changed lines.
-- Read the diff and the code it reaches. When a signature, return value or
+- Read the code the change reaches. When a signature, return value or
   behavior changes, grep every caller, including files the diff doesn't
   touch.
 - Find the expected load in the repo (README, deploy config): one person
   running a script, or many users and processes at once.
 - Run the project's checks in check-only mode: the linter on the changed
-  files (for Python, `casquette-python`'s `scripts/check.sh`), the type
+  files (for Python, `casquette-python/scripts/check.sh`), the type
   checker, and the tests that cover the change. Keep findings on changed
   lines or on callers the change breaks.
 
