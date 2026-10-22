@@ -35,9 +35,17 @@ hooks). To change a default, edit the template, not one project's copy.
 2. Show the user each difference grouped as: missing defaults to add,
    project settings that differ from the defaults, and project-only
    settings. Add the missing defaults; change or remove anything else only
-   for the items the user approves.
-3. Add any missing dev dependency with `uv add --dev`, and install hooks as
-   in New project step 4 if the project had none.
+   for the items the user approves. Use this shape:
+
+   ```text
+   Missing defaults: [tool.ty] section (add)
+   Differs: ruff line-length 100, default 88 (keep unless approved)
+   Project only: [tool.mypy] section (keep unless approved)
+   ```
+
+3. Add any missing dev dependency with `uv add --dev`. Install hooks as in New
+   project step 4 if the project had none. Hooks need a git repo, so if the
+   project has none, ask the user before running `git init`.
 4. Run `uv run ruff check --statistics`, `uv run ruff format --check` and
    `uv run ty check`. The new config usually surfaces findings in code
    nobody touched: report the counts per rule and ask the user which to fix.

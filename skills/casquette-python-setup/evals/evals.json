@@ -1,0 +1,33 @@
+[
+  {
+    "skills": ["casquette-python-setup"],
+    "query": "Start a new Python project called invoices.",
+    "files": ["An empty directory with uv installed"],
+    "expected_behavior": [
+      "Runs `uv init --package invoices` and raises requires-python to >=3.12 if uv set it lower",
+      "Runs `uv add --dev ruff ty pytest`",
+      "Appends templates/pyproject.toml to pyproject.toml and creates tests/test_invoices.py with one smoke test",
+      "Copies the pre-commit template to .pre-commit-config.yaml and runs `uvx pre-commit install`",
+      "Asks whether the project needs a devcontainer, and sets none up unasked"
+    ]
+  },
+  {
+    "skills": ["casquette-python-setup"],
+    "query": "Yes, give it a devcontainer.",
+    "files": ["The invoices project from the previous turn"],
+    "expected_behavior": [
+      "Loads the casquette-capsule skill and follows it for the devcontainer",
+      "Writes no devcontainer.json by hand"
+    ]
+  },
+  {
+    "skills": ["casquette-python-setup"],
+    "query": "Update this project's Python defaults.",
+    "files": ["An existing project whose ruff line-length is 100 where the template says 88, and which lacks the ty section"],
+    "expected_behavior": [
+      "Shows the differences in three groups: missing defaults, settings that differ, and project-only settings",
+      "Adds the missing ty section and changes nothing else without approval",
+      "Reports ruff, format and ty finding counts per rule, and asks which to fix"
+    ]
+  }
+]
