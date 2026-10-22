@@ -2,7 +2,8 @@
 name: casquette-review
 description: >-
   Reviews a code change for bugs, risks, missing tests and design-rule
-  breaks. Use when asked to review a diff, commit, branch or PR.
+  breaks. Use when asked to review a diff, commit, branch or PR. Not for
+  checking a change against an issue or spec.
 ---
 
 # Casquette review
@@ -13,8 +14,10 @@ Review the change as the developer who gets paged when it breaks.
 
 - Scope and focus: what the user names (uncommitted or staged work, a
   commit, a PR, files, `--base <ref>` for everything since that ref, or a
-  concern such as security). Nothing named: the uncommitted changes, or the
-  last commit when there are none.
+  concern such as security). Nothing named: the changes since the
+  merge-base with the default branch (`git merge-base HEAD main`, or `master`
+  when the repo has no `main`). When there is no such branch, use the
+  uncommitted changes, or the last commit when there are none.
 - Load `casquette-code-design`, and the language's skill when one exists
   (`casquette-python` for Python). Their rules are the standard for this
   review, applied to the changed lines.
@@ -26,7 +29,7 @@ Review the change as the developer who gets paged when it breaks.
 - Run the project's checks in check-only mode: the linter on the changed
   files (for Python, `casquette-python`'s `scripts/check.sh`), the type
   checker, and the tests that cover the change. Keep findings on changed
-  lines.
+  lines or on callers the change breaks.
 
 ## 2. Look for
 
@@ -93,7 +96,10 @@ Each finding has four parts of one or two short sentences:
 
 End with:
 
-- `Verdict: Ship.` or `Verdict: fix 1 and 3 first.`
+- `Verdict: Ship.` or `Verdict: fix 1 and 3 first.` Use `Verdict: Ship.` when
+  only nice-to-have findings remain.
+- `Outside the diff:` one line per problem on lines the change neither touches
+  nor breaks, when there is one.
 - `Not checked:` in one line, when something mattered and couldn't be
   checked.
 
@@ -101,12 +107,14 @@ With no findings, write `What this change does:`, `Assumed load:`, then
 `Looks good. Ship.` and one line on what you checked, and stop there.
 
 Otherwise ask which numbers to fix, recommending the Must fix ones, with
-your question tool if you have one. Change no code until the answer.
+your question tool if you have one. Change no code until the answer, unless
+the user already named the findings to fix.
 
 ## 5. Fix and recheck
 
 Fix every chosen finding, most severe first, as `casquette-code-design` and the
-language skill say, with a test for each bug fixed. Then rerun the checks
-from step 1 that the fixes touch. The work is done when they pass and no
-chosen finding remains. Report in a few lines what was fixed, and what
+language skill say, with a test that fails without the fix for each bug fixed.
+Change only code in the diff, or a caller the diff breaks. Then rerun the
+checks from step 1 that the fixes touch. The work is done when they pass and
+no chosen finding remains. Report in a few lines what was fixed, and what
 wasn't and why.
