@@ -20,16 +20,30 @@ nothing for it until the user answers.
 
 ## 2. Write each message
 
-`type(scope): summary`: imperative, lowercase, no trailing period, 72
-characters or fewer including the type. Use one of `feat`, `fix`, `refactor`,
-`docs`, `test` or `chore`: `fix` for a bug fix, `feat` for new behavior,
-`refactor` when behavior stays the same. Add a body only when it says what
-changed and why, not how:
+Subject: `type(scope): summary`, imperative, lowercase, no trailing period,
+72 characters or fewer including the type. Use one of `feat`, `fix`,
+`refactor`, `docs`, `test` or `chore`: `fix` for a bug fix, `feat` for new
+behavior, `refactor` when behavior stays the same.
+
+Body: optional. Write one only when the subject can't say why the change was
+made, or what it does beyond the diff: a reason, a side effect, a surprising
+consequence. Skip it for a self-explanatory change such as a typo, a rename or
+a doc wording fix. When you write one, give the reason, not a restatement of
+the diff. Keep it to one or two short paragraphs wrapped at 72 characters, with
+a blank line after the subject. Use bullets only for several distinct reasons.
+
+With a body:
 
 ```text
 refactor(orders): extract the retry loop from fetch_orders
 
 The retry rule was mixed with HTTP parsing, so it could not be tested alone.
+```
+
+Without one, the subject says it all:
+
+```text
+docs(readme): fix typo in invoice sentence
 ```
 
 ## 3. Stage and commit one concern at a time
