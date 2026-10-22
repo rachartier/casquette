@@ -2,8 +2,8 @@
 name: casquette-deslop
 description: >-
   Strips AI writing tells from text, comments, docstrings and commit
-  messages. Use when asked to de-slop or humanize text, or to remove em
-  dashes.
+  messages. Use when asked to de-slop or humanize text or comments, to clean up
+  AI-sounding wording, or to remove em dashes.
 ---
 # Remove AI slop
 
@@ -12,7 +12,7 @@ comments so they read like a senior engineer wrote them.
 
 ## Workflow
 
-1. Read the file. If it is long (over ~400 lines), work section by section,
+1. If the file is long (over ~400 lines), work section by section,
    since single-pass rewrites of long documents quietly compress the back
    half.
 2. Apply the edits below.
@@ -28,6 +28,9 @@ pattern.
 ```bash
 # Dashes used as punctuation (numeric ranges like 2019–2024 are fine)
 rg -n '[—–]' <file>
+
+# Spaced hyphens used as dashes (prose only; ' - ' in code is an operator)
+rg -n ' - ' <file>
 
 # Banned vocabulary (in code, only matches in comments and messages count)
 rg -n -i -w 'delve|tapestry|realm|landscape|testament to|navigate the complexities|at its core|ever-evolving|today.s fast-paced|leverage|utilize|robust|seamless|comprehensive|curated|elevate|unlock|supercharge|game-changer|cutting-edge|best-in-class|furthermore|moreover|additionally|that said|it.s worth noting|it.s important to note|crucial|vital|essential|powerful' <file>
@@ -56,11 +59,6 @@ dash inside code, inline code or a direct quotation.
 Input: The migration took three weeks — longer than we expected.
 Output: The migration took three weeks, longer than we expected.
 
-Input: It's fast — and that matters when you're running it in CI.
-Output: It's fast, which matters when you're running it in CI.
-
-Input: We had two options — rewrite the parser, or patch around it.
-Output: We had two options. Rewrite the parser, or patch around it.
 
 ## Sentence shapes to remove
 
@@ -73,7 +71,7 @@ Output: We had two options. Rewrite the parser, or patch around it.
 - **Rule-of-three padding.** Three-item lists where the third item is a
   synonym of the second. Cut to two, or find a real third.
 - **Restatement.** A sentence that says the previous one again in different
-  words. Delete the weaker one.
+  words. Delete it, as the Judgment section says.
 
 ## Vocabulary
 
@@ -155,7 +153,8 @@ Only the wording moves. Keep unchanged:
   jokes and unusual sentence rhythm
 
 Idiosyncrasy is not slop. When you can't tell whether something is the
-author's voice or a model's tic, leave it and flag it.
+author's voice or a model's tic, leave it and flag it. When the text already
+reads as the author's own voice, make few or no edits and say so in the report.
 
 ## Judgment
 

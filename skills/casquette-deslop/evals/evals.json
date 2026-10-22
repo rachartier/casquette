@@ -29,5 +29,14 @@
       "Keeps 'API key' and the en dash in 2019–2024",
       "Makes few or no edits and says the text already reads as written by a person"
     ]
+  },
+  {
+    "skills": ["casquette-deslop"],
+    "query": "Put the title back the way I wrote it, I like it.",
+    "files": ["The de-slopped README from the previous turn, whose title was rewritten"],
+    "expected_behavior": [
+      "Restores the original title exactly",
+      "Leaves the other edits from the previous turn in place"
+    ]
   }
 ]
