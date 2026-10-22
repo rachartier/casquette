@@ -1,0 +1,32 @@
+[
+  {
+    "skills": ["casquette-code-design"],
+    "query": "Add a retry to the HTTP call in client.py, three attempts with a short pause.",
+    "files": ["A Python project whose client.py has one function, fetch_json, that calls requests.get once, and no retry anywhere"],
+    "expected_behavior": [
+      "Adds the retry inside fetch_json or one small helper, with no retry class, config option or strategy object",
+      "Lets the last failure raise instead of returning an empty or default value",
+      "Runs the linter, type checker and related tests once after the edit"
+    ]
+  },
+  {
+    "skills": ["casquette-code-design"],
+    "query": "Now add a test for it.",
+    "files": ["The project after the retry change, with tests/test_client.py"],
+    "expected_behavior": [
+      "Tests fetch_json through its public function, with no helper extracted only so the test can reach it",
+      "Covers the case where every attempt fails, not only the success path",
+      "Edits no existing test"
+    ]
+  },
+  {
+    "skills": ["casquette-code-design"],
+    "query": "Make parse_date return None on bad input instead of raising.",
+    "files": ["A module with parse_date, two neighbouring functions with their own small issues, and tests for parse_date"],
+    "expected_behavior": [
+      "Makes parse_date return None as asked and changes no neighbouring function",
+      "Flags in one sentence that returning None trades Fail Fast for a silent default",
+      "Reports the neighbouring issues in one line each instead of fixing them"
+    ]
+  }
+]

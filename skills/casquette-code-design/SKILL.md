@@ -1,9 +1,9 @@
 ---
 name: casquette-code-design
 description: >-
-  Rules for code changes in any language: scope, when an abstraction is
-  justified, where new code goes, tests, choosing a dependency, comments, and
-  the checks that finish a change. Use when writing, editing, testing or
+  Sets the rules for code changes in any language: scope, when an abstraction
+  is justified, where new code goes, tests, choosing a dependency, comments,
+  and the checks that finish a change. Use when writing, editing, testing or
   reviewing code.
 ---
 # Code design
@@ -48,7 +48,8 @@ that owns one responsibility is fine. These are not:
 
 - an interface or base class with a single implementation (a fake that an
   existing test passes in counts as a second one)
-- a factory, registry, manager, builder or strategy for a single case
+- a factory, registry, manager, builder or strategy for a single case (see
+  KISS / YAGNI)
 - a wrapper that only forwards a call, or indirection a reader must jump
   through to find what happens
 - a class where a function would do
