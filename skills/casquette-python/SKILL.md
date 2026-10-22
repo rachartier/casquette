@@ -2,35 +2,40 @@
 name: casquette-python
 description: >-
   Sets the Python rules: uv, the ruff and ty check, data and module structure,
-  I/O wiring, typing, docstrings and vertical spacing. Use when writing,
-  editing or reviewing Python code.
+  I/O wiring, typing, docstrings and vertical spacing. Use when writing, editing
+  or reviewing Python code.
 ---
 # Python style
 
 Apply the `casquette-code-design` skill first; this skill adds only what is
 specific to Python. Like it, these rules apply to code you write or change.
-
-Before writing a function that reads files or the network, split out the logic
-that takes data and returns data, with the I/O around it (see I/O and wiring).
+The user's instructions take precedence over this skill.
 
 ## Tooling
 
 Use uv unless the project uses another tool or you're told otherwise:
 `uv add` for dependencies, `uv add --dev` for tooling.
 
-Verify in this order:
+After the last edit, run these as the final step, in this order. The rerun
+rule is in `casquette-code-design`'s Done section.
 
 1. Reread each function you wrote against Vertical spacing below.
-2. If the project has a formatter, run it on the changed files.
-3. Run `<skill>/scripts/check.sh <changed files>`, where `<skill>` is the folder holding this SKILL.md: one ruff
-   run with the project's rules plus this skill's annotation, docstring,
-   syntax and size rules.
-4. Run the project's type checker (`uvx ty check --output-format concise`
-   when it has none).
-5. Run the relevant tests with `uv run pytest`.
+2. If `pyproject.toml` or the dev dependencies name a formatter, run it on the
+   changed files.
+3. Run `<skill>/scripts/check.sh <changed files>`, where `<skill>` is the folder
+   holding this SKILL.md: one ruff run with the project's rules plus this
+   skill's annotation, docstring, modernization, ignore-comment and size rules.
+   The script runs ruff through uv; in a project that uses another tool, run
+   the same `ruff check` options through that tool (the script lists them).
+4. Run the type checker that `pyproject.toml` configures (`[tool.ty]`,
+   `[tool.mypy]` or `[tool.pyright]`); when it configures none, run
+   `uvx ty check --output-format concise`.
+5. Run the tests for the changed modules, for example
+   `uv run pytest tests/test_orders.py`; run `uv run pytest` alone when unsure
+   which tests those are.
 
-Fix every finding on a line you wrote or changed. Leave findings on lines
-you didn't touch.
+Fix every finding on a line you wrote or changed, except a kept size signal
+(see Size signals). Leave findings on lines you didn't touch.
 
 To create a project or update its default config, use the
 `casquette-python-setup` skill. Otherwise leave a project's ruff config as it
@@ -41,7 +46,8 @@ is.
 - Data is a `@dataclass(frozen=True)`, or the project's model library.
 - Name modules after their responsibility, never `utils.py`, `helpers.py`,
   `common.py`, `manager.py` or `misc.py`.
-- Subclass at most one level below a Protocol or ABC.
+- A class may subclass a Protocol or ABC directly, but not a class that already
+  subclasses one.
 
 ### I/O and wiring
 
@@ -71,57 +77,49 @@ to verify the change.
 
 ### Size signals
 
-The check reports long functions, high complexity and many parameters (C901,
-PLR09xx); also take a second look at a function over ~40 lines or a class
-over ~150 lines or with many public methods. These are signals, not limits.
+The check reports too many statements (PLR0915), high complexity (C901) and
+too many branches, returns or parameters (PLR09xx). Also take a second look
+at a function over ~40 lines or a class over ~150 lines or with many public
+methods. These are signals, not limits.
 
 When one is crossed, check whether the unit still does one thing. If it
 does (a cohesive public API, a dispatch table, a long but linear
-procedure), keep it and leave the finding as it is, without `# noqa`. If
-not and your change pushes it over, split it as preparatory refactoring;
-otherwise report it in one line.
+procedure), keep it: leave the finding as it is, without `# noqa`, and name
+it in one line in your final reply. If it doesn't, and your change pushes it
+over, split it as preparatory refactoring; if the split isn't possible, name
+the finding in one line instead.
 
 ## Types
 
-Follow the Google Python Style Guide (3.19), written with the newest syntax
-the project's `requires-python` allows (3.12 when it sets none): built-in
-generics, `X | None`, PEP 695 generics and `type` aliases (on older
-versions, `TypeVar` and `TypeAlias`).
+Follow the Google Python Style Guide (3.19) for everything else, with the
+newest syntax the project's `requires-python` allows (3.12 when it sets none).
+Write aliases with a `type` statement, not Google's `TypeAlias`, where the
+version allows it.
 
-- Use `Self` when a method takes or returns its own type. A function whose
-  body you change gets full annotations and a docstring, even if it had
-  none; an existing docstring stays unless the change makes it wrong. Its
-  neighbours stay as they are.
-- Annotate a variable only when the checker can't infer its type: an empty
-  container, a `None` start, or a value assigned in branches.
-- Accept wide, return narrow: parameters take the `collections.abc` type
-  you actually use (`Mapping` if you only read); returns are concrete.
-  Always parameterize generics: `Sequence[int]`, never bare `Sequence`.
-- Before `Any`, try a type parameter, `object` or a `Protocol`. A kept
-  `Any` gets `# noqa: ANN401 - <reason>`.
-- Single-letter type parameters only when unconstrained and unbounded;
-  otherwise a descriptive name. Type aliases are CapWords, `_Private` when
-  module-only, and never an import shortcut.
-- Decorators preserve signatures with `ParamSpec`
-  (`def deco[**P, R](f: Callable[P, R]) -> Callable[P, R]`). Use
-  `@overload` when the return type depends on the call form. Mark
-  overriding methods with `@override`.
-- Silence ty with its rule-specific comment: `# ty: ignore[rule]`.
-- `if TYPE_CHECKING:` only to avoid a runtime import; an import cycle caused
-  by typing is a design problem to fix first.
+- A function you add, or whose signature you change, gets full annotations and
+  a docstring.
+- Before `Any`, try a type parameter, `object` or a `Protocol`. A kept `Any`
+  gets `# noqa: ANN401 - <reason>`; the reason makes it a justified
+  suppression (see `casquette-code-design`, Tests).
+- Decorators preserve signatures with `ParamSpec`:
+  `def deco[**P, R](f: Callable[P, R]) -> Callable[P, R]`.
+- Silence ty with its rule-specific comment, `# ty: ignore[rule]`. A bare
+  `# ty: ignore` hides every error on its line.
+- `if TYPE_CHECKING:` only for a name used only in annotations. Fix an import
+  cycle caused by typing in the design, not with `Any`.
 
 ## Docstrings
 
 Google style (3.8), always `"""`. The check enforces where they are
-required; also document any non-obvious private function.
+required; also document any non-obvious private function you write or change.
 
 - Write for a caller who sees only the signature: semantics and side
   effects (e.g. mutates an argument), not implementation. Decorated
   functions describe their behavior after decoration.
 - Summary in descriptive style ("Fetches rows…", not "Fetch…" or "This
   function…"). No types in `Args:`; the annotations have them. `Raises:`
-  lists only exceptions callers should handle, not Fail Fast checks on API
-  misuse.
+  lists only exceptions callers should handle, not checks that reject API
+  misuse (see `casquette-code-design`, Fail Fast).
 - A class summary says what an instance represents ("The address of a
   cheese shop."); a `@property` is a noun phrase ("The table path.").
 
@@ -149,8 +147,8 @@ lines, so write them yourself, even when the surrounding code is dense.
 
 - A step's lines stay together, and a call stays next to the check of its
   result.
-- The body starts right after the `def` line or docstring, and a block's
-  first and last lines touch its header and the next line.
+- The body starts right after the `def` line or docstring, with no blank line
+  between a block's header and its first line.
 - A multi-line `if`/`for`/`with`/`try` that is its own step has a blank
   line before and after it; bodies of three lines or fewer stay dense.
 - Past about five paragraphs, extract a function.
