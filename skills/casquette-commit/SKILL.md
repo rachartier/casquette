@@ -54,9 +54,9 @@ commit's files, then commit. Repeat for the next concern.
 
 When one file holds two concerns, stage only this concern's hunks:
 
-1. `git diff -- <file> > <patch>`, with `<patch>` a temporary file outside the
-   repo.
-2. Delete every hunk that belongs to another concern from `<patch>`, keeping
+1. `git diff --output=<patch> -- <file>`, with `<patch>` a temporary file
+   outside the repo. Git writes the file itself, so no shell redirect is needed.
+2. Edit `<patch>` to delete every hunk that belongs to another concern, keeping
    the file headers.
 3. `git apply --cached <patch>`, then delete `<patch>`.
 4. Check that `git diff --staged` shows only this concern before committing.
