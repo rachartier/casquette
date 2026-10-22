@@ -29,5 +29,15 @@
       "Reports that the Dockerfile follows the rules, with the checks it ran or couldn't run",
       "Proposes no change to base images, stage names or layer layout"
     ]
+  },
+  {
+    "skills": ["casquette-dockerfile"],
+    "query": "Fix the root user and the token, keep the base image.",
+    "files": ["The single-stage Dockerfile from the previous review, with its base image unchanged"],
+    "expected_behavior": [
+      "Adds a numeric USER, and passes the token as a secret mount on one RUN instead of ARG",
+      "Keeps the base image unchanged",
+      "Reruns docker build --check and inspects the image user and history"
+    ]
   }
 ]

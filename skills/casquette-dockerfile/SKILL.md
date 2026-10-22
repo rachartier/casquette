@@ -144,4 +144,7 @@ curl -fsS --retry 5 --retry-connrefused localhost:<port>/  # serves (or the serv
 time docker stop app-check                            # stops in seconds, not after the 10s timeout
 ```
 
+The last three checks (`docker run`, `curl`, `docker stop`) apply only to an
+image that serves a port. For a CLI or batch image, skip them and say so.
+
 If Docker is not available, say so and list the checks you skipped.
