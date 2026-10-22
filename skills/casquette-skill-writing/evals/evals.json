@@ -43,5 +43,15 @@
       "Leaves the read-the-diff sentence and the written-out reasoning request unchanged, since findings 2 and 4 were not chosen",
       "Reports which findings were applied and which were left alone"
     ]
+  },
+  {
+    "skills": ["casquette-skill-writing"],
+    "query": "Is this skill ready to ship?",
+    "files": ["A casquette-style skill with a three-line description, four evals covering main, follow-up and restraint cases, numbered steps and no restated rules"],
+    "expected_behavior": [
+      "Says the skill is ready, with the checks it ran",
+      "Lists no finding without a reason",
+      "Edits no file"
+    ]
   }
 ]

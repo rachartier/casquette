@@ -10,9 +10,8 @@ description: >-
 The user's instructions take precedence over this skill.
 
 A skill earns its place only where it changes what the model would do without
-it. Each line either fixes a gap or goes. When asked only to review or improve
-an existing skill, list numbered findings with a reason each, and edit once
-told.
+it. When asked only to review or improve an existing skill, list numbered
+findings with a reason each, and edit once told.
 
 ## 1. Pin down the job
 
@@ -46,6 +45,13 @@ Cover the main path, a follow-up turn, and a restraint case where the right
 result is no finding, change or question. Write queries as a user would, with
 no hint of the answer. Each expected behavior must show in the transcript or
 the files.
+
+When a request asks for something a rule says to skip, expect the agent to do
+what was asked and note the rule in one line. An expected behavior that demands
+a refusal contradicts the query. Check each fixture against its query and
+expectations before running it, since a fixture bug looks like a skill failure.
+If a tool the skill needs is missing on the test machine, say in `files` what
+stands in for it.
 
 ## 3. Write the frontmatter
 
