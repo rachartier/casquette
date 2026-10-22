@@ -26,12 +26,22 @@
   {
     "skills": ["casquette-skill-writing"],
     "query": "Rename the readme skill to casquette-readme.",
-    "files": ["A repo where skills/readme/SKILL.md is referenced by another skill, the README and the user's ~/.config/opencode/AGENTS.md, plus a symlink in ~/.claude/skills"],
+    "files": ["A repo where skills/readme/SKILL.md is referenced by another skill, the README, AGENTS.md and CLAUDE.md, plus the user's ~/.config/opencode/AGENTS.md and a symlink in ~/.claude/skills"],
     "expected_behavior": [
       "Renames the folder and the name field together",
       "Greps the old ID across the repo, AGENTS.md, CLAUDE.md, other installed skills and skill symlinks",
       "Updates every reference and relinks the broken symlink",
       "Leaves unrelated occurrences of the word readme, such as README.md, unchanged"
+    ]
+  },
+  {
+    "skills": ["casquette-skill-writing"],
+    "query": "Fix 1 and 3.",
+    "files": ["The demo skill that was reviewed, plus findings.md holding the four numbered findings from that review"],
+    "expected_behavior": [
+      "Applies finding 1 (cite the loaded skill's rules instead of restating them) and finding 3 (report every finding with a severity instead of only high-severity ones)",
+      "Leaves the read-the-diff sentence and the written-out reasoning request unchanged, since findings 2 and 4 were not chosen",
+      "Reports which findings were applied and which were left alone"
     ]
   }
 ]
