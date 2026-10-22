@@ -15,7 +15,7 @@
   {
     "skills": ["casquette-review", "casquette-code-design"],
     "query": "Review this branch against main.",
-    "files": ["A TypeScript project whose branch changes parseAmount to return cents instead of euros; one caller outside the diff still divides the result by 100"],
+    "files": ["A TypeScript project whose branch changes parseAmount to return cents instead of euros; one caller outside the diff sums parseAmount's results without dividing"],
     "expected_behavior": [
       "Reviews the changes since main",
       "Greps every caller of parseAmount, including files the branch doesn't touch",
@@ -39,7 +39,7 @@
     "query": "Review my last commit.",
     "files": ["A Python project whose last commit adds a tested pure function and its call site, with no rule broken and all checks passing"],
     "expected_behavior": [
-      "Reports 'What this change does:', 'Assumed load:', then 'Looks good. Ship.' and one line on what was checked",
+      "Reports 'What this change does:' and 'Assumed load:', then a Ship verdict with no must-fix or should-fix finding, and one line on what was checked",
       "Asks no question and changes no file"
     ]
   },
@@ -50,6 +50,16 @@
     "expected_behavior": [
       "States an assumed load of one user on small files",
       "Treats the in-memory load as a decision, not a finding, since the expected load stays under the commented limit"
+    ]
+  },
+  {
+    "skills": ["casquette-review", "casquette-code-design", "casquette-python"],
+    "query": "Review my changes.",
+    "files": ["A Python project on a feature branch with two commits after main and one uncommitted edit; main is the default branch"],
+    "expected_behavior": [
+      "Reviews the changes since the merge-base with main: both commits and the uncommitted edit",
+      "Finds that starting point with git merge-base (or the equivalent) instead of asking the user",
+      "Doesn't review main's own history"
     ]
   }
 ]
