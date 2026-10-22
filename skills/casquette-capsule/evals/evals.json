@@ -1,0 +1,32 @@
+[
+  {
+    "skills": ["casquette-capsule"],
+    "query": "Set up a devcontainer for this project.",
+    "files": ["A Python project with pyproject.toml and no .devcontainer/, and a python template in the capsule store"],
+    "expected_behavior": [
+      "Runs `command -v capsule` before anything else",
+      "Lists the stored templates with `capsule list` and picks the python one",
+      "Runs `capsule init python`, so a `.devcontainer/` appears in the project",
+      "Does not run `capsule run`, which opens an interactive shell"
+    ]
+  },
+  {
+    "skills": ["casquette-capsule"],
+    "query": "Also mount my SSH keys into every container, read-only.",
+    "files": ["The project from the previous turn, with .devcontainer/ copied from the python template, and a ~/.config/capsule/config.toml that has a [volumes] section"],
+    "expected_behavior": [
+      "Puts the SSH mount in devcontainer.json as a readonly mount, not as a third field in config.toml",
+      "Asks the user before recreating the container, since recreating wipes installed state",
+      "Leaves the existing mounts in config.toml unchanged"
+    ]
+  },
+  {
+    "skills": ["casquette-capsule"],
+    "query": "What templates do I have?",
+    "files": ["A capsule store with the six shipped templates"],
+    "expected_behavior": [
+      "Runs `capsule list` and reports the template names",
+      "Changes no file and starts no container"
+    ]
+  }
+]
