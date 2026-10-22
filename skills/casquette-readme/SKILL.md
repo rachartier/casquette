@@ -1,8 +1,8 @@
 ---
 name: casquette-readme
 description: >-
-  Write or rewrite a project README that is short, factual and code-first, with
-  no marketing filler. Use when asked to create, rewrite, update or improve a
+  Writes a project README that is short, factual and code-first, with no
+  marketing filler. Use when asked to create, rewrite, update or improve a
   README.
 ---
 # README
@@ -50,7 +50,8 @@ project does with it, what comes out. Not modules, classes or files.
 
 - Add it only when there is a real flow: several steps, a branch, or
   several actors (user, tool, external service). Skip it for a library whose
-  usage is one call.
+  usage is one call. If the user asks for one anyway, add it and say in one line
+  that this skill would skip it.
 - `flowchart LR` for a pipeline, `sequenceDiagram` when timing between
   actors matters.
 - 10 nodes max. Labels in the user's words ("diagnostic appears",
@@ -104,9 +105,9 @@ flowchart LR
 - Check every option in Configuration exists in the source with that default.
 - Check every link resolves.
 - Check the mermaid block parses
-  (`npx -p @mermaid-js/mermaid-cli mmdc -i README.md -o /tmp/out.md`).
+  (`npx -p @mermaid-js/mermaid-cli mmdc -i README.md -o <scratch>/out.md`, with
+  `<scratch>` a folder outside the repo).
 - Search the draft for the banned list and remove every hit.
-- Delete any sentence whose removal loses no information.
 
 ## Skeleton
 

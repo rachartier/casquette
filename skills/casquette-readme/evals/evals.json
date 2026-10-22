@@ -1,0 +1,32 @@
+[
+  {
+    "skills": ["casquette-readme"],
+    "query": "Rewrite the README for this CLI.",
+    "files": ["A Python CLI with pyproject.toml, a --help that lists its commands and defaults, and an old README full of 'seamless' and 'Welcome to' that installs with uv tool install"],
+    "expected_behavior": [
+      "Reads pyproject.toml and the --help output before writing, and takes the install command from the repo",
+      "Removes the banned words and the 'Welcome to' opener",
+      "Puts the smallest working usage example first, taken from the real command",
+      "Adds a flow diagram only if the CLI has several steps or a branch"
+    ]
+  },
+  {
+    "skills": ["casquette-readme"],
+    "query": "Add a configuration section.",
+    "files": ["The project from the previous turn, with config.py whose defaults are timeout=30 and retries=3"],
+    "expected_behavior": [
+      "Puts the full default config in one code block, taken from the source defaults",
+      "Gives each option a short inline comment",
+      "Lists only options that exist in the source, with the same defaults"
+    ]
+  },
+  {
+    "skills": ["casquette-readme"],
+    "query": "Add a flow diagram to the README.",
+    "files": ["A one-function library whose README usage is a single call to parse()"],
+    "expected_behavior": [
+      "Says the skill normally skips a diagram for a library whose usage is one call",
+      "Adds the diagram because the user asked, and its labels match src/parser.py"
+    ]
+  }
+]
