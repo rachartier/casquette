@@ -60,5 +60,4 @@ To commit only some hunks of a file: `git diff --output=<tmp> -- <file>` with
 `<tmp>` outside the repo, delete the other changes' hunks from `<tmp>`, then
 `git apply --cached <tmp>` and delete `<tmp>`.
 
-When done, only the files you asked about are unstaged and nothing else is
-staged. Report each commit's hash and subject.
+When done, nothing is staged that the user didn't ask to commit. Report each commit's hash and subject.
