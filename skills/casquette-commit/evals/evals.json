@@ -45,6 +45,15 @@
   },
   {
     "skills": ["casquette-commit"],
+    "query": "Commit my changes. The last commit message was sloppy.",
+    "files": ["A repo with uncommitted changes to src/parse.py that add a guard for empty input, and one unpushed commit 'wip' on top of main"],
+    "expected_behavior": [
+      "Makes a new commit for the changes and leaves the 'wip' commit as it is",
+      "Doesn't amend, rebase or reset the 'wip' commit, since the user didn't ask for that"
+    ]
+  },
+  {
+    "skills": ["casquette-commit"],
     "query": "Commit.",
     "files": ["A repo whose working tree is clean"],
     "expected_behavior": [
