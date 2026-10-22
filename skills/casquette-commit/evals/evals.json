@@ -1,0 +1,53 @@
+[
+  {
+    "skills": ["casquette-commit"],
+    "query": "Commit my changes.",
+    "files": ["A Python repo with uncommitted work: a `parse_date` helper moved from `loader.py` to a new `dates.py` with no behavior change, and a fix in `loader.py` that now calls it"],
+    "expected_behavior": [
+      "Runs git status and git diff before staging anything",
+      "Makes the refactor commit first, with a subject starting `refactor(` that names the moved helper",
+      "Makes a second commit for the fix, with a subject starting `fix(`",
+      "Stages each commit's files by name, with no git add . or git add -A",
+      "When loader.py holds both concerns, the refactor commit holds only the extraction and the fix commit holds only the blank-line filter",
+      "Gives each subject as imperative and lowercase, with no trailing period and 72 characters or fewer",
+      "Reports both commit hashes and subjects, and pushes nothing"
+    ]
+  },
+  {
+    "skills": ["casquette-commit"],
+    "query": "Split these into commits.",
+    "files": ["A repo with uncommitted changes: a rounding bug fix in `billing/rounding.py` and a typo fix in `README.md`"],
+    "expected_behavior": [
+      "Makes one commit for billing/rounding.py and a separate docs commit for README.md",
+      "Stages README.md by name, not with git add -A"
+    ]
+  },
+  {
+    "skills": ["casquette-commit"],
+    "query": "Also commit the new test in its own commit.",
+    "files": ["The repo after the two commits from the previous scenario, plus an uncommitted `tests/test_rounding.py` that covers the fix"],
+    "expected_behavior": [
+      "Stages only tests/test_rounding.py, by name",
+      "Commits it with a subject starting `test(`",
+      "Leaves the two earlier commits unchanged"
+    ]
+  },
+  {
+    "skills": ["casquette-commit"],
+    "query": "Commit everything.",
+    "files": ["Uncommitted changes: a feature in `api.py`, and a `notes.txt` of scratch text with no clear purpose"],
+    "expected_behavior": [
+      "Commits the feature in api.py",
+      "Asks which commit notes.txt belongs to, and stages nothing for it"
+    ]
+  },
+  {
+    "skills": ["casquette-commit"],
+    "query": "Commit.",
+    "files": ["A repo whose working tree is clean"],
+    "expected_behavior": [
+      "Says there is nothing to commit",
+      "Makes no commit, not even an empty one"
+    ]
+  }
+]

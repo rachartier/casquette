@@ -35,6 +35,12 @@ writing docs without filler.
 | `casquette-deslop` | Strip AI writing tells from prose, comments, docstrings and commit messages. |
 | `casquette-skill-writing` | Write, revise or slim down an agent skill, with evals. |
 
+### Git
+
+| Skill | Use it to |
+| --- | --- |
+| `casquette-commit` | Split work into Conventional Commits, one per concern, staging files by name. |
+
 ## Requirements
 
 - Python skills: [uv](https://docs.astral.sh/uv/).
