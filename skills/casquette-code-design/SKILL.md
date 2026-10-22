@@ -133,8 +133,8 @@ with why.
 A change is done when the linter, type checker and relevant tests pass, or
 you've said which one couldn't run and why, and the temporary files you
 created are deleted. Run the checks once after the edits; after a fix, rerun
-only what failed. Don't check after every edit unless a skill such as `tdd`
-runs its own loop.
+the checks the fix touches. Don't check after every edit unless the task
+asks for a check loop.
 
 ## Comments
 
