@@ -15,10 +15,20 @@
   {
     "skills": ["casquette-python-setup"],
     "query": "Yes, give it a devcontainer.",
-    "files": ["The invoices project from the previous turn"],
+    "files": ["The invoices project from the previous turn, on a machine where capsule is installed"],
     "expected_behavior": [
+      "Runs `command -v capsule` before choosing how to set up the devcontainer",
       "Loads the casquette-capsule skill and follows it for the devcontainer",
       "Writes no devcontainer.json by hand"
+    ]
+  },
+  {
+    "skills": ["casquette-python-setup"],
+    "query": "Yes, give it a devcontainer.",
+    "files": ["The invoices project from the previous turn, with requires-python >=3.12, on a machine where capsule is not installed (a PATH without it stands in)"],
+    "expected_behavior": [
+      "Runs `command -v capsule`, finds nothing, and runs no capsule command",
+      "Writes .devcontainer/devcontainer.json on the mcr.microsoft.com/devcontainers/python:3.12 image, with uv installed and `uv sync --locked` in postCreateCommand"
     ]
   },
   {

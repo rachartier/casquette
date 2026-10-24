@@ -70,7 +70,7 @@ npx skills add rachartier/casquette -g --skill casquette-code-design --skill cas
 > Some skills call others. Install them together:
 >
 > - `casquette-python` needs `casquette-code-design`, and hands config changes to `casquette-python-setup`
-> - `casquette-python-setup` uses `casquette-capsule` for a devcontainer, and offers `casquette-python-audit` on an existing project
+> - `casquette-python-setup` uses `casquette-capsule` for a devcontainer when capsule is installed, and offers `casquette-python-audit` on an existing project
 > - `casquette-python-audit` uses `casquette-python` and `casquette-python-setup`
 > - `casquette-review` uses `casquette-code-design` and the language's skill (`casquette-python`)
 > - `casquette-deslop` uses `casquette-code-design` for code comments

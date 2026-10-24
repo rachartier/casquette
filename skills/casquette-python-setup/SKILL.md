@@ -26,8 +26,19 @@ only: it changes no source code and reports no lint, type or test findings.
 3. Append `<skill>/templates/pyproject.toml` to `pyproject.toml`.
 4. Copy `<skill>/templates/pre-commit-config.yaml` to
    `.pre-commit-config.yaml`, then `uvx pre-commit install`.
-5. Ask whether the project needs a devcontainer. If yes, set it up with the
-   `casquette-capsule` skill.
+5. Ask whether the project needs a devcontainer. If yes and
+   `command -v capsule` prints a path, set it up with the `casquette-capsule`
+   skill. Otherwise write `.devcontainer/devcontainer.json`, with the image
+   tag set to the `requires-python` minor version:
+
+   ```json
+   {
+     "name": "<name>",
+     "image": "mcr.microsoft.com/devcontainers/python:3.12",
+     "remoteEnv": { "UV_LINK_MODE": "copy" },
+     "postCreateCommand": "pip install uv && uv sync --locked"
+   }
+   ```
 
 ## Updating an existing project
 
