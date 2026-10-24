@@ -24,9 +24,12 @@ which commit gets it and leave it unstaged until the user answers.
 
 ## Message
 
-`type(scope): summary`, with type one of `feat`, `fix`, `refactor`, `docs`,
-`test`, `chore`, chosen by the main effect. Lowercase, imperative, no period,
-72 characters max in total. If the subject needs "and", split the commit.
+`type(scope): summary`, with type one of `feat`, `fix`, `perf`, `refactor`,
+`style`, `test`, `docs`, `build`, `ci`, `chore`, `revert`, chosen by the main
+effect. `style` is formatting with no code change, `build` the build system or
+dependencies, `ci` the CI config, `chore` anything else. A `revert` body says
+`This reverts commit <hash>.` Lowercase, imperative, no period, 72 characters
+max in total. If the subject needs "and", split the commit.
 
 Breaking change: add `!` to the type of its main effect (removing a public
 function is `feat!`, not `refactor!`) and a footer

@@ -80,5 +80,15 @@
       "Marks the subject as breaking with `!` before the colon",
       "Adds a `BREAKING CHANGE:` footer after a blank line that says what breaks and what to use instead"
     ]
+  },
+  {
+    "skills": ["casquette-commit"],
+    "query": "Commit my changes.",
+    "files": ["Uncommitted changes: `pyproject.toml` and `uv.lock` bump `httpx` to a newer version, `.github/workflows/test.yml` adds Python 3.13 to the test matrix, and `src/report.py` is reformatted by ruff with no code change"],
+    "expected_behavior": [
+      "Makes three commits, one per change",
+      "Gives the dependency bump a subject starting `build(`, the workflow change one starting `ci(` and the reformat one starting `style(`",
+      "Uses `chore(` for none of them"
+    ]
   }
 ]
