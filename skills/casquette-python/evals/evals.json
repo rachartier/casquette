@@ -32,8 +32,8 @@
   },
   {
     "skills": ["casquette-python"],
-    "query": "Add a refund branch to total_orders in orders.py.",
-    "files": ["A src-layout project with requires-python >=3.12 and an orders.py whose total_orders is a cohesive, annotated, documented function with complexity exactly 10, the C901 limit, so one more branch exceeds it"],
+    "query": "Add a refund branch to total_orders in orders.py: an order with status \"refunded\" subtracts its amount from the total.",
+    "files": ["A src-layout project with requires-python >=3.12 and an orders.py whose total_orders is an annotated, documented flat match on order status, one line per case, with complexity exactly 10, the C901 limit, so one more case exceeds it"],
     "expected_behavior": [
       "Adds the branch to total_orders without splitting it into a new function or class",
       "Adds no # noqa comment to the function",

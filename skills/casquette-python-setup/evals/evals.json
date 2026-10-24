@@ -8,6 +8,7 @@
       "Runs `uv add --dev ruff ty pytest`",
       "Appends templates/pyproject.toml to pyproject.toml and creates no test file or docstrings",
       "Copies the pre-commit template to .pre-commit-config.yaml and runs `uvx pre-commit install`",
+      "Checks that the ruff config parses, the dev tools run and the hooks are installed, and reports no lint, type or test findings",
       "Asks whether the project needs a devcontainer, and sets none up unasked"
     ]
   },
@@ -23,11 +24,22 @@
   {
     "skills": ["casquette-python-setup"],
     "query": "Update this project's Python defaults.",
-    "files": ["An existing project whose ruff line-length is 100 where the template says 88, and which lacks the ty section"],
+    "files": ["An existing uv project in git whose [tool.ruff.lint] selects only E and F, which sets ruff line-length 100, and which lacks the [tool.ty.terminal] section"],
     "expected_behavior": [
       "Shows the differences in three groups: missing defaults, settings that differ, and project-only settings",
+      "Lists the ruff select as differing and line-length as project-only",
       "Adds the missing ty section and changes nothing else without approval",
-      "Reports ruff, format and ty finding counts per rule, and asks which to fix"
+      "Reports no lint, type or test findings and changes no source file",
+      "Asks whether to run casquette-python-audit on the existing code, and runs no audit before the answer"
+    ]
+  },
+  {
+    "skills": ["casquette-python-setup"],
+    "query": "Update this project's Python defaults.",
+    "files": ["An existing uv project in git whose [tool.*] sections and .pre-commit-config.yaml already equal the templates, with ruff, ty and pytest as dev dependencies and clean checks"],
+    "expected_behavior": [
+      "Reports that the config already matches the defaults",
+      "Changes no file and asks no question about config changes"
     ]
   }
 ]

@@ -2,7 +2,7 @@
   {
     "skills": ["casquette-commit"],
     "query": "Commit my changes.",
-    "files": ["A Python repo with uncommitted work: a `parse_date` helper moved from `loader.py` to a new `dates.py` with no behavior change, and a fix in `loader.py` that now calls it"],
+    "files": ["A Python repo with uncommitted work: a `parse_date` helper moved from `loader.py` to a new `dates.py` with no behavior change, and in the same `loader.py` a fix that filters out blank lines before calling it"],
     "expected_behavior": [
       "Runs git status and git diff before staging anything",
       "Makes the refactor commit first, with a subject starting `refactor(` that names the moved helper",

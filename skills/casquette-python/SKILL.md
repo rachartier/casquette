@@ -7,9 +7,11 @@ description: >-
 ---
 # Python style
 
+The user's instructions take precedence over this skill.
+
 Apply the `casquette-code-design` skill first; this skill adds only what is
 specific to Python. Like it, these rules apply to code you write or change.
-The user's instructions take precedence over this skill.
+Where both are silent, follow the Google Python Style Guide.
 
 ## Tooling
 
@@ -19,18 +21,17 @@ Use uv unless the project uses another tool or you're told otherwise:
 After the last edit, run these as the final step, in this order. The rerun
 rule is in `casquette-code-design`'s Done section.
 
-1. Reread each function you wrote against Vertical spacing below.
-2. If `pyproject.toml` or the dev dependencies name a formatter, run it on the
+1. If `pyproject.toml` or the dev dependencies name a formatter, run it on the
    changed files.
-3. Run `<skill>/scripts/check.sh <changed files>`, where `<skill>` is the folder
+2. Run `<skill>/scripts/check.sh <changed files>`, where `<skill>` is the folder
    holding this SKILL.md: one ruff run with the project's rules plus this
    skill's annotation, docstring, modernization, ignore-comment and size rules.
    The script runs ruff through uv; in a project that uses another tool, run
    the same `ruff check` options through that tool (the script lists them).
-4. Run the type checker that `pyproject.toml` configures (`[tool.ty]`,
+3. Run the type checker that `pyproject.toml` configures (`[tool.ty]`,
    `[tool.mypy]` or `[tool.pyright]`); when it configures none, run
    `uvx ty check --output-format concise`.
-5. Run the tests for the changed modules, for example
+4. Run the tests for the changed modules, for example
    `uv run pytest tests/test_orders.py`; run `uv run pytest` alone when unsure
    which tests those are.
 
@@ -55,7 +56,9 @@ Put logic worth testing in functions, or methods on data classes, that take
 data and return data, and do the I/O around them (in `main` or the caller).
 Test them directly; that needs no injection. The I/O code still gets a test:
 parse responses in a pure function, and test the rest (requests, error
-handling, exit codes) through the one seam.
+handling, exit codes) through the one seam. A function asked to work on a
+file is still two: one that takes the rows, and a thin one that reads the
+file and calls it.
 
 Inject only when a test can't avoid the I/O otherwise, for example when the
 logic and the I/O interleave (retries, polling, paging). Then add one seam per
@@ -77,8 +80,7 @@ to verify the change.
 
 ### Size signals
 
-The check reports too many statements (PLR0915), high complexity (C901) and
-too many branches, returns or parameters (PLR09xx). Also take a second look
+The check reports size findings (C901, PLR09xx). Also take a second look
 at a function over ~40 lines or a class over ~150 lines or with many public
 methods. These are signals, not limits.
 
@@ -91,16 +93,13 @@ the finding in one line instead.
 
 ## Types
 
-Follow the Google Python Style Guide (3.19) for everything else, with the
-newest syntax the project's `requires-python` allows (3.12 when it sets none).
-Write aliases with a `type` statement, not Google's `TypeAlias`, where the
-version allows it.
+Use the newest syntax the project's `requires-python` allows (3.12 when it
+sets none): write aliases with a `type` statement, not Google's `TypeAlias`,
+where the version allows it.
 
-- A function you add, or whose signature you change, gets full annotations and
-  a docstring.
 - Before `Any`, try a type parameter, `object` or a `Protocol`. A kept `Any`
-  gets `# noqa: ANN401 - <reason>`; the reason makes it a justified
-  suppression (see `casquette-code-design`, Tests).
+  gets `# noqa: ANN401 - <reason>`; the reason keeps it from being a
+  suppression that only hides a finding (`casquette-code-design`, Tests).
 - Decorators preserve signatures with `ParamSpec`:
   `def deco[**P, R](f: Callable[P, R]) -> Callable[P, R]`.
 - Silence ty with its rule-specific comment, `# ty: ignore[rule]`. A bare
@@ -110,12 +109,12 @@ version allows it.
 
 ## Docstrings
 
-Google style (3.8), always `"""`. The check enforces where they are
-required; also document any non-obvious private function you write or change.
+Google style (3.8), always `"""`. Which functions get one is set by
+`casquette-code-design` (Scope of a change); among those, the check enforces
+public ones, and a non-obvious private one gets one too.
 
 - Write for a caller who sees only the signature: semantics and side
-  effects (e.g. mutates an argument), not implementation. Decorated
-  functions describe their behavior after decoration.
+  effects (e.g. mutates an argument), not implementation.
 - Summary in descriptive style ("Fetches rows…", not "Fetch…" or "This
   function…"). No types in `Args:`; the annotations have them. `Raises:`
   lists only exceptions callers should handle, not checks that reject API

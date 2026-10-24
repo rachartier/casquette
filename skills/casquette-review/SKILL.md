@@ -8,6 +8,8 @@ description: >-
 
 # Casquette review
 
+The user's instructions take precedence over this skill.
+
 Review the change as the developer who gets paged when it breaks.
 
 ## 1. Read the change
@@ -16,20 +18,19 @@ Review the change as the developer who gets paged when it breaks.
   commit, a PR, files, a ref for everything since that ref, or a
   concern such as security). Nothing named: the changes since the
   merge-base with the default branch (`git merge-base HEAD main`, or `master`
-  when the repo has no `main`). When there is no such branch, use the
-  uncommitted changes, or the last commit when there are none. On the default
-  branch the merge-base is `HEAD`, so this means the uncommitted changes.
+  when the repo has no `main`), plus uncommitted changes. When that is empty
+  (on the default branch with a clean tree) or there is no such branch, use
+  the uncommitted changes, or the last commit when there are none.
 - Load `casquette-code-design`, and the language's skill when one exists
   (`casquette-python` for Python). Their rules are the standard for this
   review, applied to the changed lines.
-- Read the code the change reaches. When a signature, return value or
-  behavior changes, grep every caller, including files the diff doesn't
-  touch.
+- When a signature, return value or behavior changes, grep every caller,
+  including files the diff doesn't touch.
 - Find the expected load in the repo (README, deploy config): one person
   running a script, or many users and processes at once.
 - Run the project's checks in check-only mode: the linter on the changed
-  files (for Python, `casquette-python/scripts/check.sh`), the type
-  checker, and the tests that cover the change. Keep findings on changed
+  files (for Python, `casquette-python`'s check script), the type checker,
+  and the tests that cover the change. Keep findings on changed
   lines or on callers the change breaks.
 
 ## 2. Look for
@@ -104,8 +105,8 @@ End with:
 - `Not checked:` in one line, when something mattered and couldn't be
   checked.
 
-With no findings, write `What this change does:`, `Assumed load:`, then
-`Looks good. Ship.` and one line on what you checked, and stop there.
+With no findings, write `What this change does:`, `Assumed load:`, one line
+on what you checked, then `Verdict: Ship.`, and stop there.
 
 Otherwise ask which numbers to fix, recommending the Must fix ones, with
 your question tool if you have one. Change no code until the answer, unless

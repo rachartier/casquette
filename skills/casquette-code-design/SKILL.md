@@ -1,12 +1,13 @@
 ---
 name: casquette-code-design
 description: >-
-  Sets the rules for code changes in any language: scope, when an abstraction
-  is justified, where new code goes, tests, choosing a dependency, comments,
-  and the checks that finish a change. Use when writing, editing, testing or
-  reviewing code.
+  Sets the rules for any code change: scope, abstractions, where code goes,
+  tests, dependencies, comments and the checks that finish it. Use when
+  writing, editing, testing or reviewing code.
 ---
 # Code design
+
+The user's instructions take precedence over this skill.
 
 These rules apply to code you write or change. When reviewing, apply them to
 the diff, not to the code around it.
@@ -19,8 +20,6 @@ correctness and the explicit requirement, fail fast, separation of concerns,
 KISS/YAGNI, DRY. If a requirement forces a violation, do what was asked and
 flag it in one sentence.
 
-- **KISS / YAGNI**: before adding an abstraction, name the second concrete
-  use that needs it today. If there is none, don't add it.
 - **Reuse before writing**: reach, in this order, for code the project
   already has, the standard library, a dependency already installed, then a
   new library that passes Dependencies below. Write it yourself only when
@@ -43,13 +42,14 @@ flag it in one sentence.
 
 ## Over-engineering
 
-Simple means easy to read and change, not few files or few lines. A module
-that owns one responsibility is fine. These are not:
+Before adding an abstraction, name the second concrete use that needs it
+today; with none, don't add it (KISS / YAGNI). Simple means easy to read and
+change, not few files or few lines. A module that owns one responsibility is
+fine. These are not:
 
 - an interface or base class with a single implementation (a fake that an
   existing test passes in counts as a second one)
-- a factory, registry, manager, builder or strategy for a single case (see
-  KISS / YAGNI)
+- a factory, registry, manager, builder or strategy for a single case
 - a wrapper that only forwards a call, or indirection a reader must jump
   through to find what happens
 - a class where a function would do
@@ -63,22 +63,21 @@ that owns one responsibility is fine. These are not:
 
 Before adding behavior (anything beyond a local fix):
 
-1. Use the project's AGENTS.md map if it has one.
-2. Name what the change decides, what it talks to (database, network,
+1. Name what the change decides, what it talks to (database, network,
    files, UI) and what it coordinates, and list every place it must reach:
    callers, tests, fixtures, templates, exports. Update each of them and
    nothing else.
-3. Put each in the module that already owns it. New code with no owner
+2. Put each in the module that already owns it. New code with no owner
    starts in one new module named after the problem it solves.
-4. Make the change easy, then make the easy change: if the code is hard to
+3. Make the change easy, then make the easy change: if the code is hard to
    change (it would take on a second responsibility, a name misleads, the
    piece you need is buried in a larger function), first refactor just that
    code without changing behavior: this preparatory refactoring is part of
    the task.
-5. On a change that spans several modules, name the next request the
+4. On a change that spans several modules, name the next request the
    change makes likely. Where two designs cost the same today, pick the one
    that makes that request easy (where a responsibility lives, how data is
-   shaped or stored). Build none of it, and name it in one line at the end.
+   shaped or stored). Build none of it; it goes in the report.
 
 Don't impose an architecture (layered, hexagonal, clean architecture)
 unless the project already uses one or the user asks.
@@ -86,13 +85,13 @@ unless the project already uses one or the user asks.
 ## Scope of a change
 
 - Every changed line traces to the request. Add no feature, file, doc,
-  comment, docstring, annotation or refactor outside the touched code; name
-  such extras at the end instead.
+  comment, docstring, annotation or refactor outside the touched code; put
+  such extras in the report instead.
 - A function you add, or whose signature you change, gets its annotations and
   docstring. Other functions in the file stay as they are, even one whose body
   you edit.
 - Read what the change touches and what depends on it, not the whole repo.
-- Report an unrelated problem (a bug, a broken test) in one line instead of
+- Put an unrelated problem (a bug, a broken test) in the report instead of
   fixing it.
 - Solve the general problem. Don't hard-code a value or add a special case
   that only makes a test pass. If a test looks wrong, or the task can't be
@@ -102,11 +101,9 @@ unless the project already uses one or the user asks.
 
 Prefer an existing library over writing your own when it:
 
-- solves the actual problem without a pile of glue code
 - is maintained: a release or real commits in the last ~12 months, supports
-  the project's language version, issues get answers
-- is established: widely used, documented, with type information where the
-  language has it
+  the project's language version, issues get answers, typed where the
+  language allows
 - has a permissive license (MIT, BSD, Apache-2.0, ISC, PSF, MPL-2.0). If a
   better fit has another license, name it and its license to the user and
   let them choose. Never use a package with no license.
@@ -117,7 +114,8 @@ does the same.
 
 ## Reporting a change
 
-After a code change, add a line to the report only when it applies: a new
+After a code change, add a line to the report only when it applies: an
+extra or unrelated problem you left alone, the likely next request, a new
 dependency (name, reason, license), a parameter added only so a test can
 verify the change, or a size signal (long function, many parameters) you kept,
 with why.
@@ -142,11 +140,10 @@ asks for a check loop.
 
 ## Comments
 
-Keep comments sparse and useful: when code is full of comments, readers and
-reviewers skim past all of them and miss the few that matter. Comment only
-what the code can't say for itself, in one short line of plain words. Say
-why, never what, and never how you got here. Keep comments true when the
-code changes. No section comments that designate areas.
+Keep comments sparse, so the few that matter get read. Comment only what the
+code can't say for itself, in one short line of plain words. Say why, never
+what, and never how you got here. Keep comments true when the code changes.
+No section comments that designate areas.
 
 ```python
 # Good: API returns naive datetimes; treat as UTC (#412).

@@ -7,6 +7,8 @@ description: >-
 ---
 # Remove AI slop
 
+The user's instructions take precedence over this skill.
+
 Rewrite text so it reads like a knowledgeable person typing plainly, and
 comments so they read like a senior engineer wrote them.
 
@@ -16,9 +18,8 @@ comments so they read like a senior engineer wrote them.
    since single-pass rewrites of long documents quietly compress the back
    half.
 2. Apply the edits below.
-3. Run the checks below on the result. Models emit these tells by habit, and
-   the ones that survive a rewrite are the ones natural enough to slip past
-   a reread; a search doesn't slip.
+3. Run the checks below on the result: a search catches the tells a reread
+   misses.
 
 ## Checks
 
@@ -29,11 +30,11 @@ pattern.
 # Dashes used as punctuation (numeric ranges like 2019–2024 are fine)
 rg -n '[—–]' <file>
 
-# Spaced hyphens used as dashes (prose only; ' - ' in code is an operator)
-rg -n ' - ' <file>
+# Spaced hyphens used as dashes, not list bullets (prose only; ' - ' in code is an operator)
+rg -n '\S - ' <file>
 
 # Banned vocabulary (in code, only matches in comments and messages count)
-rg -n -i -w 'delve|tapestry|realm|landscape|testament to|navigate the complexities|at its core|ever-evolving|today.s fast-paced|leverage|utilize|robust|seamless|comprehensive|curated|elevate|unlock|supercharge|game-changer|cutting-edge|best-in-class|furthermore|moreover|additionally|that said|it.s worth noting|it.s important to note|crucial|vital|essential|powerful' <file>
+rg -n -i -w 'delve|tapestry|realm|landscape|testament to|navigate the complexities|at its core|ever-evolving|today.s fast-paced|leverage|utilize|robust|seamless|comprehensive|curated|elevate|unlock|supercharge|game-changer|cutting-edge|best-in-class|furthermore|moreover|additionally|that said|it.s worth noting|it.s important to note|crucial|vital|essential|powerful|key' <file>
 ```
 
 In code, also check that the diff changes only comment, docstring and message
@@ -59,7 +60,6 @@ dash inside code, inline code or a direct quotation.
 Input: The migration took three weeks — longer than we expected.
 Output: The migration took three weeks, longer than we expected.
 
-
 ## Sentence shapes to remove
 
 - **Not-X-but-Y reveals.** "It's not just a linter, it's a formatter." Say
@@ -70,8 +70,8 @@ Output: The migration took three weeks, longer than we expected.
 - **Rhetorical questions** as openers or transitions.
 - **Rule-of-three padding.** Three-item lists where the third item is a
   synonym of the second. Cut to two, or find a real third.
-- **Restatement.** A sentence that says the previous one again in different
-  words. Delete it, as the Judgment section says.
+- **Restatement and empty sentences.** A sentence that repeats the previous
+  one or says nothing: delete it rather than rewrite it.
 
 ## Vocabulary
 
@@ -85,9 +85,9 @@ its kind:
   leverage → use, utilize → use, robust → (fast, well-tested, handles
   malformed input), comprehensive → complete or (cut), seamless → (cut, or
   say what doesn't break).
-- Filler emphasis (crucial, vital, essential, powerful): cut it, or replace
-  it with the reason the thing matters. "Key" counts only when it means
-  important, never in "API key" or "key-value".
+- Filler emphasis (crucial, vital, essential, powerful, key): cut it, or
+  replace it with the reason the thing matters. "Key" counts only when it
+  means important, never in "API key" or "key-value".
 
 Also remove assistant chatter, which the check doesn't catch: openers and
 sign-offs such as "Great question", "Certainly!", "Here's a…", "I hope this
@@ -137,7 +137,6 @@ Cut "This commit…", file-by-file lists and AI attribution lines.
   suggests". Strip the borrowed credibility but keep the claim, so "studies
   show teams save 30% of their time" becomes "teams save 30% of their
   time", and flag it in the report so the author can source or cut it.
-  Deleting the claim removes information, which is not your call.
 - Cheerleading about the subject matter
 - Second-person coaching the author did not ask for: "You'll love how…"
 
@@ -147,7 +146,8 @@ Only the wording moves. Keep unchanged:
 
 - In code, everything except comments, docstrings and messages
 - Code, inline code, YAML frontmatter, tables, link targets and anchor text
-- Heading hierarchy and document order
+- Heading hierarchy and document order, apart from sections this skill says
+  to cut
 - Every technical claim, number, name, version and command
 - Any voice or idiom that is clearly the author's own, including profanity,
   jokes and unusual sentence rhythm
@@ -158,24 +158,13 @@ reads as the author's own voice, make few or no edits and say so in the report.
 
 ## Judgment
 
-Prefer short declarative sentences and concrete nouns.
-
-When a sentence says nothing, delete it rather than rewriting it. A rewrite
-of an empty sentence is still an empty sentence.
-
 When you can't rewrite a sentence without guessing at facts, leave it and
 say so in the report. A slightly stilted true sentence beats a smooth
 invented one.
-
-The word count usually goes down; if it went up, look for filler you
-added.
 
 ## Output
 
 Edit the file in place; for pasted text, return the revised text. Then give
 a short report: the changes you were least sure about, and anything you left
 alone because fixing it would have required knowing something you don't.
-
-If the user asks for a diff, produce a unified diff so they can reject
-individual edits. Offer one for documents that need careful review, such as
-published documentation.
+For published documentation, offer a unified diff.

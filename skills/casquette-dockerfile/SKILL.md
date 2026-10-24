@@ -7,6 +7,8 @@ description: >-
 ---
 # Multi-stage Dockerfile
 
+The user's instructions take precedence over this skill.
+
 Build in early stages, ship only the runtime output in the last one. The final
 image holds no compiler, dev dependency, package-manager cache, source tree or
 secret.
@@ -53,9 +55,8 @@ EXPOSE <port>
 ENTRYPOINT ["<executable>", "<arg>"]
 ```
 
-- `runtime` is the last stage, so a plain `docker build .` produces it.
-  BuildKit skips stages the target does not depend on, so `test` costs nothing
-  there; CI runs it with `docker build --target test .`.
+- `runtime` is the last stage, so a plain `docker build .` produces it and
+  skips `test`; CI runs `docker build --target test .`.
 - Install with the locked command (`npm ci`, `uv sync --locked`, `cargo build
   --locked`, `go mod download`). Never a resolving install that can pick new
   versions.
@@ -66,19 +67,21 @@ ENTRYPOINT ["<executable>", "<arg>"]
 ## Base images
 
 - **Static binary** (Go with `CGO_ENABLED=0`, Rust on musl):
-  `gcr.io/distroless/static:nonroot`. It already has CA certificates, tzdata
-  and a non-root user (65532).
-- **Dynamically linked binary**: `gcr.io/distroless/cc:nonroot`, or the `-slim`
-  Debian image when the program needs a shell or extra system packages.
+  `gcr.io/distroless/static-debian<N>:nonroot`. It already has CA
+  certificates, tzdata and a non-root user (65532).
+- **Dynamically linked binary**: `gcr.io/distroless/base-debian<N>:nonroot`
+  (Go with cgo), `cc-debian<N>` (Rust, C++), or the `-slim` Debian image when
+  the program needs a shell or extra system packages.
 - **Interpreted or VM language**: the `-slim` (or JRE / ASP.NET runtime)
   variant of the official image, on the same version and distro as the build
   stage.
 - **Alpine**: only when the project already uses it. Some Python and Node
   packages ship no musl build, so they compile from source or fail.
 
-Pin every `FROM` to the exact version the project uses, never `latest`. Add an
-`@sha256:` digest when the user wants reproducible builds and has Renovate or
-Dependabot to bump it.
+Pin every `FROM` to the exact version the project uses, never `latest`.
+For distroless, pin the build image's Debian release (`-debian<N>`); the bare
+`:nonroot` tag moves. Add an `@sha256:` digest when the user wants
+reproducible builds and has Renovate or Dependabot to bump it.
 
 ## Rules
 
@@ -98,37 +101,29 @@ Dependabot to bump it.
 - **Caches.** Point a `--mount=type=cache` at the package manager's cache
   directory instead of deleting the cache in the same `RUN`. The cache never
   reaches a layer.
-- **Layers.** Combine commands only when they must share a layer, such as
-  `apt-get update && apt-get install -y --no-install-recommends …`. Do not
-  chain unrelated steps just to lower the layer count; it breaks caching.
 - **`.dockerignore`.** Always write one. Exclude `.git`, dependency folders
   (`node_modules`, `.venv`, `target`), build outputs, `.env*` and local secret
   files, editor and OS files, and the Dockerfile itself.
-- **Build arguments.** Use `ARG` only for values that really vary between
-  builds (version, target platform). Runtime configuration goes in environment
-  variables set at `docker run`, not baked in.
 - **HEALTHCHECK.** Add one only when the image runs under plain Docker or
   Compose; Kubernetes ignores it and uses probes. Distroless has no `curl`, so
   the check must call the program itself.
 
 ## Language gotchas
 
-- **Node:** the official image's `node` user is UID 1000. Run `node
-  dist/index.js`, not `npm start`. Production dependencies come from a separate
-  `npm ci --omit=dev` stage.
+- **Node:** run `node dist/index.js`, not `npm start`. Production
+  dependencies come from a separate `npm ci --omit=dev` stage.
 - **Python:** keep the virtualenv at the same path in both stages, on the same
   Python image; its scripts use absolute paths. With uv, run `uv sync --locked
   --no-install-project` before copying the source so the dependency layer
   survives code changes.
-- **Go:** `CGO_ENABLED=0` for `distroless/static`; with cgo, use
-  `distroless/base`.
+- **Go:** `CGO_ENABLED=0` for `distroless/static-debian<N>`; with cgo, use
+  `distroless/base-debian<N>`.
 - **Rust:** a cache mount on `target/` is not in the layer, so copy the binary
-  out in the same `RUN`. The `rust` image and `distroless/cc` must be on the
-  same Debian release, or the binary needs a newer glibc than the runtime has.
+  out in the same `RUN`. The `rust` image and `distroless/cc-debian<N>` must be
+  on the same Debian release, or the binary needs a newer glibc than the
+  runtime has.
 - **.NET:** 8+ images ship a non-root user (`USER $APP_UID`) and listen on
   8080. Copy every `.csproj` before `dotnet restore`.
-- **Java:** build with the JDK image, run on the `-jre` variant; tests belong
-  in the `test` stage, so `package` skips them.
 
 ## Verify
 

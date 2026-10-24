@@ -2,11 +2,11 @@
   {
     "skills": ["casquette-skill-writing"],
     "query": "Create a skill that writes changelog entries for this repo.",
-    "files": ["A repo with a skills/ folder of casquette-* skills, a README table listing them, and a CHANGELOG.md in Keep a Changelog format"],
+    "files": ["A repo with a skills/ folder of three small team-* skills, a README table listing them, and a CHANGELOG.md in Keep a Changelog format"],
     "expected_behavior": [
       "Asks or checks what the model gets wrong on changelogs without a skill before writing the body",
       "Writes at least three evals in evals/evals.json, including a restraint case",
-      "Names the skill with the casquette- prefix and matches the folder name",
+      "Names the skill with the team- prefix and matches the folder name",
       "Writes a description of two or three lines with 'Use when' triggers and no account of how the skill works",
       "Adds the skill to the README table"
     ]
@@ -14,23 +14,24 @@
   {
     "skills": ["casquette-skill-writing"],
     "query": "What could we simplify in this skill?",
-    "files": ["A skill whose body restates eight rules from a skill it loads, tells the model to read the diff before reviewing, says 'only report high-severity issues', and asks it to write out its reasoning step by step"],
+    "files": ["A skill whose body restates eight rules from a house-style skill it loads, tells the model to read the diff before reviewing, says 'only report high-severity issues', and asks it to explain every checklist item in a full paragraph before the verdict"],
     "expected_behavior": [
       "Lists numbered findings with a reason each and edits nothing",
       "Flags the restated rules and suggests citing the loaded skill instead",
       "Flags the read-the-diff sentence as something the model already does",
       "Flags 'only report high-severity issues' as cutting recall, and suggests reporting everything with a severity",
-      "Flags the written-out reasoning and suggests asking for the result with a short reason"
+      "Flags the per-item paragraphs and suggests asking for the result with a short reason"
     ]
   },
   {
     "skills": ["casquette-skill-writing"],
-    "query": "Rename the readme skill to casquette-readme.",
+    "query": "Rename the readme skill to team-readme.",
     "files": ["A repo where skills/readme/SKILL.md is referenced by another skill, the README, AGENTS.md and CLAUDE.md, plus the user's ~/.config/opencode/AGENTS.md and a symlink in ~/.claude/skills"],
     "expected_behavior": [
       "Renames the folder and the name field together",
       "Greps the old ID across the repo, AGENTS.md, CLAUDE.md, other installed skills and skill symlinks",
-      "Updates every reference and relinks the broken symlink",
+      "Updates every reference inside the repo",
+      "Asks before editing ~/.config/opencode/AGENTS.md and relinking the symlink, since they are outside the working directory",
       "Leaves unrelated occurrences of the word readme, such as README.md, unchanged"
     ]
   },
@@ -40,17 +41,17 @@
     "files": ["The demo skill that was reviewed, plus findings.md holding the four numbered findings from that review"],
     "expected_behavior": [
       "Applies finding 1 (cite the loaded skill's rules instead of restating them) and finding 3 (report every finding with a severity instead of only high-severity ones)",
-      "Leaves the read-the-diff sentence and the written-out reasoning request unchanged, since findings 2 and 4 were not chosen",
+      "Leaves the read-the-diff sentence and the per-item paragraphs unchanged, since findings 2 and 4 were not chosen",
       "Reports which findings were applied and which were left alone"
     ]
   },
   {
     "skills": ["casquette-skill-writing"],
     "query": "Is this skill ready to ship?",
-    "files": ["A casquette-style skill with a three-line description, four evals covering main, follow-up and restraint cases, numbered steps and no restated rules"],
+    "files": ["A small skill with a three-line description, four evals covering main, follow-up and restraint cases, numbered steps and no restated rules"],
     "expected_behavior": [
-      "Says the skill is ready, with the checks it ran",
-      "Lists no finding without a reason",
+      "Lists only findings that name a concrete failure, or says the skill is ready",
+      "Adds no style nit or rewording without a failure behind it",
       "Edits no file"
     ]
   }

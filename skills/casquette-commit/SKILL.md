@@ -6,15 +6,14 @@ description: >-
 ---
 # Casquette commit
 
-The user's instructions override this skill. Commit only what was asked; don't
-amend, rebase, reset or push unless asked.
+The user's instructions take precedence over this skill. Commit only what was
+asked; don't amend, rebase, reset or push unless asked.
 
 ## Split
 
-Read `git status` and the staged and unstaged diff. Make one commit per logical
-change, with its tests and docs. Give these their own commit: a
-behavior-preserving refactor a feature needs (placed before it), and moves,
-renames or reformatting. Otherwise, one commit.
+Make one commit per logical change, with its tests and docs. Give these their
+own commit: a behavior-preserving refactor a feature needs (placed before it),
+and moves, renames or reformatting. Otherwise, one commit.
 
 Run the project's test or build command once per commit (say so in the report
 if there is none). If a split would make a commit fail it, keep those changes
@@ -60,4 +59,5 @@ To commit only some hunks of a file: `git diff --output=<tmp> -- <file>` with
 `<tmp>` outside the repo, delete the other changes' hunks from `<tmp>`, then
 `git apply --cached <tmp>` and delete `<tmp>`.
 
-When done, nothing is staged that the user didn't ask to commit. Report each commit's hash and subject.
+When done, nothing is staged that the user didn't ask to commit. Report each
+commit's hash and subject.

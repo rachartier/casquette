@@ -69,10 +69,12 @@ npx skills add rachartier/casquette -g --skill casquette-code-design --skill cas
 > [!IMPORTANT]
 > Some skills call others. Install them together:
 >
-> - `casquette-python` needs `casquette-code-design`
+> - `casquette-python` needs `casquette-code-design`, and hands config changes to `casquette-python-setup`
+> - `casquette-python-setup` uses `casquette-capsule` for a devcontainer, and offers `casquette-python-audit` on an existing project
 > - `casquette-python-audit` uses `casquette-python` and `casquette-python-setup`
 > - `casquette-review` uses `casquette-code-design` and the language's skill (`casquette-python`)
 > - `casquette-deslop` uses `casquette-code-design` for code comments
+> - `casquette-readme` uses `casquette-deslop`'s word checks
 > - `casquette-capsule-exec` uses `casquette-capsule` to install capsule
 
 Without the CLI, clone the repo and link the skills into your agent's skills
@@ -102,7 +104,8 @@ Or name the skill:
 Use the casquette-readme skill to rewrite README.md.
 ```
 
-# Python Tooling defaults
+## Python tooling defaults
+
 `casquette-python-setup` writes its ruff, ty and pytest defaults from
 [`templates/pyproject.toml`](skills/casquette-python-setup/templates/pyproject.toml)
 and its hooks from

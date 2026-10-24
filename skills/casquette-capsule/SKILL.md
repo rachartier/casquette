@@ -1,13 +1,13 @@
 ---
 name: casquette-capsule
 description: >-
-  Sets up and manages devcontainers with the capsule CLI: templates, a
-  project's `.devcontainer/`, and global mounts and env. Use when the user
-  mentions capsule, wants a devcontainer for a project, wants to add, update or
-  troubleshoot a template, or wants dotfiles, SSH keys, display or env in every
-  container. For commands run inside a container, use `casquette-capsule-exec`.
+  Manages capsule devcontainers: templates, a project's `.devcontainer/`, and
+  dotfile, key and env mounts for every container. Use when the user mentions
+  capsule or wants a devcontainer or template set up; not to run commands.
 ---
 # capsule
+
+The user's instructions take precedence over this skill.
 
 Capsule keeps devcontainer templates in one store and runs them in any project through the `devcontainer` CLI. Run `capsule --help` or `capsule <cmd> --help` for exact flags; this skill covers what the help text does not say.
 
@@ -26,6 +26,8 @@ If the check still prints nothing, `~/.local/bin` is not on the user's `PATH`.
 - Template store: `~/.config/capsule/templates/<name>/` (or under `$XDG_CONFIG_HOME`). Each template is a directory with `devcontainer.json`, plus any files it references (`Dockerfile`, scripts), plus capsule's own `capsule.toml` (description, author, git provenance, uid/gid override).
 - Global config: `~/.config/capsule/config.toml`. Optional; see [Global config](#global-config).
 - Log: `~/.config/capsule/capsule.log`. Read it when a command fails without a clear message.
+
+The store and `config.toml` are shared by every project: show any change there and get the user's agreement first.
 
 ## Interactive commands
 
@@ -46,7 +48,7 @@ These commands wait for a human, so leave them to the user or use the non-intera
 
 ## Templates
 
-**Add.** `capsule add <source>` accepts a local directory, `gh:owner/repo[@ref][/subpath]`, a GitHub tree URL, or any git URL (with `--ref` and `--subpath`). A source with `devcontainer.json` at its top becomes one template, named after the directory unless `--name` is given. A source without one is scanned for child directories that contain `devcontainer.json`, and each becomes a template; existing names are skipped. Git sources record provenance, so `capsule pull <t>` re-fetches later.
+**Add.** `capsule add <source>` takes the sources its `--help` lists, plus a GitHub tree URL. A source with `devcontainer.json` at its top becomes one template, named after the directory unless `--name` is given. A source without one is scanned for child directories that contain `devcontainer.json`, and each becomes a template; existing names are skipped. Git sources record provenance, so `capsule pull <t>` re-fetches later.
 
 **Write a new one.** Create a directory with a `devcontainer.json` (and a `Dockerfile` if needed), then `capsule add ./that-dir --name <t>`. Follow the shipped templates: start from an `mcr.microsoft.com/devcontainers/*` image, add `features`, install project dependencies in `postCreateCommand` so the same template works for many projects. Capsule-specific keys:
 
@@ -57,14 +59,14 @@ Set a description so `capsule list` explains the template: `capsule meta <t> --d
 
 **Prove it works.** A template is done when every tool the user asked for runs in a real container: `capsule exec -q <t> -- sh -c 'go version && gopls version'` from a scratch directory. Base images often lack the tools you expect (`devcontainers/go` ships no `gopls`), so install what is missing in `postCreateCommand`, pinned to a version that supports the image's toolchain. Remove the scratch container afterwards with `capsule stop --force`.
 
-**Change one.** Edit the stored `devcontainer.json` directly. `capsule update <dir> --name <t>` and `capsule pull <t>` replace every template file except `capsule.toml`, so local edits to the template are lost. Other commands: `view`, `search <keyword>`, `rename`, `export`.
+**Change one.** Edit the stored `devcontainer.json` directly. `capsule update <dir> --name <t>` and `capsule pull <t>` replace every template file except `capsule.toml`, so local edits to the template are lost.
 
 ## Project devcontainer
 
-- `capsule run <t>` or `capsule exec <t> -- ...` uses the stored template directly, with no copy in the project. Prefer this when the project needs nothing special.
-- `capsule init <t>` copies the template into `./.devcontainer/` (`--output` for another path, `--force` to overwrite). Use it when the project needs its own tweaks; edit the copy, not the store. After that, `capsule run` and `capsule exec` with no template name use the local copy.
+- `capsule init <t>` copies the template into `./.devcontainer/` (`--output` for another path, `--force` to overwrite). Use it when the user asks for a devcontainer in the project, or the project needs its own tweaks; edit the copy, not the store. After that, `capsule run` and `capsule exec` with no template name use the local copy.
+- `capsule run <t>` or `capsule exec <t> -- ...` uses the stored template directly, with no copy in the project. Use it when the user only wants to work in a container and the project needs nothing special.
 
-Precedence: `capsule run <t>` with a name uses the stored template even when `.devcontainer/` exists. `capsule exec` always uses `.devcontainer/` when it exists and treats every argument as the command.
+Precedence: `capsule run <t>` with a name uses the stored template even when `.devcontainer/` exists; `capsule exec` never does (see `casquette-capsule-exec`).
 
 **Apply changes.** An existing container keeps its old settings. After a change to `devcontainer.json` or to the mounts in `config.toml`, the container must be recreated: `capsule run --recreate` (the user) or `capsule exec -q --recreate [t] -- true` (you). Recreating destroys everything installed in the container, so confirm with the user first. For a Dockerfile template whose cached layers are stale (an old `apt-get update`, a moved `git clone`), use `--rebuild` instead: it also rebuilds the image without the build cache.
 
@@ -87,10 +89,10 @@ quiet = false        # true hides devcontainer up output behind a spinner
 # gid = 1000         # default: host gid
 ```
 
-- **Mounts from `config.toml` are always writable.** Capsule rejects a third field such as `:ro`, because `devcontainer up --mount` cannot take it. For a read-only mount (SSH keys), put it in the template's `devcontainer.json` instead: `"mounts": ["source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,readonly"]`.
+- **Mounts from `config.toml` are always writable.** Capsule rejects a third field such as `:ro`, because `devcontainer up --mount` cannot take it. For a read-only mount (SSH keys), put it in each `devcontainer.json` that needs it: `"mounts": ["source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,readonly"]`. Tell the user a read-only mount can't be global.
 - **Container path must match the container user's home, and it differs per image**: most Microsoft images use `vscode`, `javascript-node` uses `node`, others use `root`. One global dotfile mount fits only templates that share a user. Check with `capsule exec -q <t> -- sh -c 'echo $HOME'`.
 - A mount whose host or container path is already declared in the template's `mounts` is skipped, so the template wins.
 - `[dotfiles]` is deprecated: its mounts still apply, with a warning. Move them to `[volumes]` when you edit the config.
 - uid/gid precedence: per-template override (`capsule meta <t> --uid N --gid N`, `-1` to unset) over `[run]` over the host's ids.
 
-For GUI apps on WSL2, mount `/tmp/.X11-unix:/tmp/.X11-unix` in `[volumes]`. With WSLg, set `DISPLAY = ":0"`, `WAYLAND_DISPLAY = "wayland-0"` and `XDG_RUNTIME_DIR = "/mnt/wslg/runtime-dir"` in `[env]`; with an external X server (VcXsrv, X410), set `DISPLAY = "$DISPLAY"`.
+For GUI apps on WSL2, read [wsl.md](wsl.md).

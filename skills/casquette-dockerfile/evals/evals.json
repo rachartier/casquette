@@ -17,14 +17,14 @@
     "files": ["A single-stage Python Dockerfile that runs as root, uses shell-form CMD, and passes an API token through ARG"],
     "expected_behavior": [
       "Lists the root user, the shell-form CMD and the token in ARG, each with its fix",
-      "Explains that the token stays in the image history and suggests a secret mount",
+      "Explains that the token stays in the image history, and moves it to run time or to a secret mount on one RUN",
       "Changes no file before the user answers"
     ]
   },
   {
     "skills": ["casquette-dockerfile"],
     "query": "Can you check this Dockerfile is fine?",
-    "files": ["A Go service with a multi-stage Dockerfile: CGO_ENABLED=0 build, distroless/static:nonroot runtime, exec-form ENTRYPOINT, a .dockerignore and pinned versions"],
+    "files": ["A Go service with a multi-stage Dockerfile: CGO_ENABLED=0 build on golang:1.23-bookworm, distroless/static-debian12:nonroot runtime, exec-form ENTRYPOINT, a .dockerignore and pinned versions"],
     "expected_behavior": [
       "Reports that the Dockerfile follows the rules, with the checks it ran or couldn't run",
       "Proposes no change to base images, stage names or layer layout"
@@ -35,7 +35,7 @@
     "query": "Fix the root user and the token, keep the base image.",
     "files": ["The single-stage Dockerfile from the previous review, with its base image unchanged"],
     "expected_behavior": [
-      "Adds a numeric USER, and passes the token as a secret mount on one RUN instead of ARG",
+      "Adds a numeric USER, removes the token from ARG and ENV, and uses a secret mount only if the build needs the token",
       "Keeps the base image unchanged",
       "Reruns docker build --check and inspects the image user and history"
     ]

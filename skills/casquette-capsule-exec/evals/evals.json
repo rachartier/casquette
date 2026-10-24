@@ -5,7 +5,7 @@
     "files": ["A Python project with .devcontainer/devcontainer.json and a failing pytest test in tests/test_parse.py"],
     "expected_behavior": [
       "Runs `command -v capsule` first",
-      "Calls `capsule exec -q -- pytest` from the project root, with `--` and no template name",
+      "Runs the tests through `capsule exec -q --` from the project root, with no template name",
       "Reports the exit code and the failing test from the command's output",
       "Changes no file"
     ]

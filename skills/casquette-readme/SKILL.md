@@ -7,6 +7,8 @@ description: >-
 ---
 # README
 
+The user's instructions take precedence over this skill.
+
 Goal: in 10 seconds the reader knows what the project does; in 2 minutes they
 have it installed and running.
 
@@ -17,7 +19,8 @@ have it installed and running.
   config defaults, public API, CI workflows.
 - Every fact comes from the repo. If something is unknown (minimum version,
   install name), ask once or leave `TODO:`. Never guess.
-- Rewriting: keep what is correct; drop what is stale.
+- Rewriting: keep what is correct; drop what is stale. When the README
+  already follows this skill, say so and change nothing.
 
 ## Structure
 
@@ -71,8 +74,6 @@ flowchart LR
 
 ## Writing rules
 
-- Show, don't tell: a code block beats a sentence, a sentence beats an
-  adjective.
 - Imperative and present tense: "Run", "Set", "Returns". No "we".
 - Paragraphs of 3 sentences max. Headings are plain nouns: "Installation",
   not "🚀 Getting Started".
@@ -83,10 +84,9 @@ flowchart LR
 
 ## Banned
 
-- Words: seamless, effortless, robust, powerful, blazing/lightning fast,
-  cutting-edge, state-of-the-art, comprehensive, elevate, supercharge,
-  unleash, empower, leverage, streamline, delightful, intuitive,
-  game-changer, next-generation, simply, just, easily.
+- Words: the vocabulary in `casquette-deslop`'s Checks, plus effortless,
+  blazing/lightning fast, state-of-the-art, unleash, empower, streamline,
+  delightful, intuitive, next-generation, simply, just, easily.
 - Openers: "Welcome to…", "This project aims to…", "Whether you're a
   beginner or an expert…", "Look no further", "Say goodbye to…".
 - Emoji on headings or bullets. One emoji in the title at most, and only if
@@ -107,44 +107,5 @@ flowchart LR
 - Check the mermaid block parses
   (`npx -p @mermaid-js/mermaid-cli mmdc -i README.md -o <scratch>/out.md`, with
   `<scratch>` a folder outside the repo).
-- Search the draft for the banned list and remove every hit.
-
-## Skeleton
-
-````markdown
-# name
-
-One sentence: what it does.
-
-## How it works
-
-One sentence.
-
-```mermaid
-flowchart LR
-    A[Input] --> B[Step] --> C[Output]
-```
-
-## Requirements
-
-- Runtime >= X.Y
-
-## Installation
-
-```sh
-<install command>
-```
-
-## Usage
-
-```lang
-<smallest working example>
-```
-
-## Configuration
-
-```lang
-<full defaults, one comment per option>
-```
-````
-
+- Run `casquette-deslop`'s Checks on the draft, search it for the other
+  banned words, and remove every hit.

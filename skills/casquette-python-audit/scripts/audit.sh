@@ -31,7 +31,13 @@ scoped=0
 while (($#)); do
   case "$1" in
     --changed) scoped=1; mapfile -t targets < <({ git diff --name-only HEAD; git ls-files --others --exclude-standard; } | grep '\.py$' | sort -u) ;;
-    --base) scoped=1; mapfile -t targets < <({ git diff --name-only "$2...HEAD"; git diff --name-only HEAD; git ls-files --others --exclude-standard; } | grep '\.py$' | sort -u); shift ;;
+    --base)
+      # A bad ref would empty the file list and report a clean audit.
+      if (($# < 2)) || ! git rev-parse --verify --quiet "$2^{commit}" >/dev/null; then
+        echo "--base needs a branch or commit that exists, for example: --base main" >&2
+        exit 2
+      fi
+      scoped=1; mapfile -t targets < <({ git diff --name-only "$2...HEAD"; git diff --name-only HEAD; git ls-files --others --exclude-standard; } | grep '\.py$' | sort -u); shift ;;
     *) tools+=("$1") ;;
   esac
   shift

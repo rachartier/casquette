@@ -15,7 +15,8 @@
     "query": "Also mount my SSH keys into every container, read-only.",
     "files": ["The project from the previous turn, with .devcontainer/ copied from the python template, and a ~/.config/capsule/config.toml that has a [volumes] section"],
     "expected_behavior": [
-      "Puts the SSH mount in devcontainer.json as a readonly mount, not as a third field in config.toml",
+      "Adds the SSH mount to the project's .devcontainer/devcontainer.json as a readonly mount, not as a third field in config.toml",
+      "Tells the user a read-only mount can't be global, and asks before adding it to stored templates under ~/.config/capsule/",
       "Asks the user before recreating the container, since recreating wipes installed state",
       "Leaves the existing mounts in config.toml unchanged"
     ]

@@ -28,5 +28,14 @@
       "Says the skill normally skips a diagram for a library whose usage is one call",
       "Adds the diagram because the user asked, and its labels match src/parser.py"
     ]
+  },
+  {
+    "skills": ["casquette-readme"],
+    "query": "Improve the README.",
+    "files": ["A small Python CLI whose README already follows the skill: one-line intro, requirements, a uv tool install snippet, a usage example matching --help, and no banned words"],
+    "expected_behavior": [
+      "Checks the README's commands and claims against the repo",
+      "Says the README already follows the rules and changes nothing, or only fixes a fact it found wrong"
+    ]
   }
 ]

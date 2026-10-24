@@ -1,12 +1,13 @@
 ---
 name: casquette-capsule-exec
 description: >-
-  Runs commands in a project's devcontainer with `capsule exec`, not on the
-  host. Use when the user asks to test, build or reproduce something in the
-  container or with capsule, when a host toolchain is missing, or when a clean
-  Linux environment is needed to verify a change.
+  Runs commands in a project's devcontainer with `capsule exec`. Use when asked
+  to test, build or reproduce something in the container or with capsule, when
+  a host toolchain is missing, or when a change needs a clean Linux environment.
 ---
 # capsule exec
+
+The user's instructions take precedence over this skill.
 
 `capsule exec` starts (or reuses) the devcontainer for the current directory, runs one command in it, and returns that command's output and exit code. It is the non-interactive way in: use it for every command you want to run inside the container.
 
@@ -30,7 +31,7 @@ capsule exec -q <template> -- <cmd> [args...]   # stored template
 
 - `-q` hides the `devcontainer up` log, so stdout is the command's own output. If startup fails, capsule prints the captured log anyway.
 - `--` is required. Capsule parses its own flags (`-q`, `--quiet`, `--rebuild`, `--recreate`) anywhere on the line, so without `--` the command `pytest -q` silently loses its `-q`, and `make --rebuild` destroys the container.
-- The command runs directly, without a shell. For pipes, `&&`, redirects, globs or `$VAR`, wrap it: `capsule exec -q -- sh -c 'cd sub && make 2>&1 | tail -50'`.
+- The command runs directly, without a shell. For pipes, `&&`, redirects, globs or `$VAR`, wrap it: `capsule exec -q -- sh -c 'cd sub && make'`.
 
 ## How the container behaves
 
@@ -38,7 +39,7 @@ capsule exec -q <template> -- <cmd> [args...]   # stored template
 - **Each call is a fresh process.** `cd`, `export` and shell state do not carry over between calls. Chain dependent steps in one `sh -c`.
 - **Container state persists.** Packages installed with `apt`, `pip` or `npm -g`, and files outside the workspace, survive between calls until the container is recreated. Install a missing tool once, then reuse it.
 - **Host env is not forwarded.** Only variables from `~/.config/capsule/config.toml` `[env]`, the devcontainer's `remoteEnv`, `UID` and `GID` reach the container. Pass anything else inline: `-- env FOO=1 make`.
-- **The exit code is the command's.** Read success or failure from it directly.
+- **The exit code is the command's.** Read success or failure from it and report it. A pipe such as `| tail` replaces it with the last command's.
 - **The user is the image's user** (`vscode` on Microsoft images), not root. Use `sudo` when the image provides it.
 
 ## Timing
@@ -47,11 +48,11 @@ The first call for a directory pulls the image and runs `postCreateCommand`: all
 
 ## Recreating
 
-`--recreate` destroys the container and creates a new one from the current `devcontainer.json`. `--rebuild` does the same and also rebuilds a Dockerfile-based image without the build cache. Use either only when `devcontainer.json` or the capsule mounts changed, the image is stale, or the container is broken. Both wipe all installed state, so get the user's agreement first; see the Apply changes rule in `casquette-capsule`. Put it before `--`: `capsule exec -q --recreate -- true`.
+`--recreate` destroys the container and creates a new one from the current `devcontainer.json`. `--rebuild` does the same and also rebuilds a Dockerfile-based image without the build cache. Use either only when `devcontainer.json` or the capsule mounts changed, the image is stale, or the container is broken. Both wipe all installed state, so get the user's agreement first. Put it before `--`: `capsule exec -q --recreate -- true`.
 
 ## Stay non-interactive
 
-Commands that wait for input hang the call. Run one-shot forms instead: `python -c` or a script instead of a REPL, `pytest` instead of `pytest --pdb`, `git --no-pager log`. `capsule run` opens an interactive shell, so leave it for the user.
+Commands that wait for input hang the call, so run one-shot forms. `capsule run` opens an interactive shell; leave it for the user.
 
 ## Cleanup
 
