@@ -5,7 +5,9 @@
     "files": ["A Python project with a failing test, an undefined name, a subprocess call with shell=True and a mutable default argument"],
     "expected_behavior": [
       "Runs scripts/audit.sh once, without rerunning tools with other options",
-      "Shows the test result and grades, then one table sorted from CRITICAL to INFO",
+      "Opens with a 'Score: N/10' header holding the mean, then a table of seven areas, each with a 10-character bar of █ and ░ matching its score and a reason of a few words",
+      "Puts the test result and coverage in the Tests row's reason",
+      "Counts the findings per severity in one line, then shows one table sorted from CRITICAL to INFO",
       "Lists the failing test, the undefined name and the shell=True call as CRITICAL, and the mutable default as HIGH",
       "Reports ruff S602 and bandit B602 as one row",
       "Asks which rows to fix, recommending the CRITICAL and HIGH ones, and changes no code before the answer"

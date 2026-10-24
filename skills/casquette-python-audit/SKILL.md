@@ -64,12 +64,22 @@ families, with the fix "update the config with the
 
 The report is three parts, in this order:
 
-1. One line with the test result and coverage.
-2. A 0-10 grade with a few words of reason for each of: correctness, tests,
-   typing, style, complexity, design, security.
-3. The table, with LOW rows grouped by rule:
+1. Scores: the mean as the header, then 0-10 for correctness, tests, typing,
+   style, complexity, design, security, each with a reason of a few words.
+2. The finding count per severity.
+3. The findings, with LOW rows grouped by rule:
 
 ```
+**Score: 6.4/10**
+
+| Area | Score | Why |
+|---|---|---|
+| Correctness | `████░░░░░░`  4 | `reslt` undefined in runner.py |
+| Tests | `███████░░░`  7 | 41 passed, 2 failed, 78% coverage |
+| Security | `██████████` 10 | nothing found |
+
+**16 findings**: 1 critical, 2 high, 4 medium, 9 low
+
 | # | Severity | Where | Problem | Fix | Source |
 |---|---|---|---|---|---|
 | 1 | CRITICAL | src/app/runner.py:7 | `reslt` is undefined, so run() always raises NameError | Rename to `result` | ruff F821, ty |
