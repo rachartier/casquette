@@ -47,7 +47,7 @@ writing docs without filler.
   `casquette-python-audit` also needs bash, git and Python 3.11+.
 - Container skills: [capsule](https://github.com/rachartier/capsule), the
   [devcontainer CLI](https://github.com/devcontainers/cli), and Docker or
-  Podman.
+  Podman. `casquette-dockerfile` needs only Docker.
 
 ## Installation
 
