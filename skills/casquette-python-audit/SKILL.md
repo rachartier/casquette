@@ -48,10 +48,11 @@ F821 and ty) is one finding.
 | HIGH | A bug on plausible input: swallowed error, wrong type passed, mutable default, tests that don't run |
 | MEDIUM | Costs maintainers: a unit doing several things, duplication, dead code, a module with low coverage |
 | LOW | Style: missing docstrings or annotations, `Any` without a reason, naming, imports, formatting, commented-out code |
-| INFO | Worth knowing, nothing to fix: a tool that couldn't run, a long but cohesive unit (dispatch table, linear procedure), a design note |
+| INFO | Worth knowing, nothing to fix: a tool that couldn't run, a kept size signal, a design note |
 
 Size findings (C901, PLR09xx, radon) are signals: rank one MEDIUM only when
-the unit does more than one thing, otherwise INFO.
+the unit does more than one thing, otherwise INFO (a long but cohesive unit,
+such as a dispatch table or a linear procedure).
 
 When the project has its own ruff config, the lint section's header says
 `project config + audit baseline`: ruff added the bug rules `F`, `E9`, `B`,

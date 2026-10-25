@@ -23,7 +23,7 @@ Review the change as the developer who gets paged when it breaks.
   the uncommitted changes, or the last commit when there are none.
 - Load `casquette-code-design`, and the language's skill when one exists
   (`casquette-python` for Python). Their rules are the standard for this
-  review, applied to the changed lines.
+  review.
 - When a signature, return value or behavior changes, grep every caller,
   including files the diff doesn't touch.
 - Find the expected load in the repo (README, deploy config): one person
@@ -54,11 +54,10 @@ step 4 do the ranking. In order of importance:
 
 ## 3. Check each finding
 
-- A bug, risk or scale finding names a concrete case: this input or
-  situation gives this wrong result. A design finding names the rule and
-  the line.
-- Re-read the lines and confirm: the caller exists, the value can really be
-  empty, the code really is unused.
+- A bug, risk or scale finding names a concrete case that the code allows:
+  this input or situation (a caller that exists, a value that can really be
+  empty) gives this wrong result. A design finding names the rule and the
+  line.
 - A shortcut whose comment names its limit is a decision, unless the
   expected load already crosses that limit.
 - The fix is the smallest one that works; prefer one that deletes code.

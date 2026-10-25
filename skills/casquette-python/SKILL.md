@@ -10,8 +10,7 @@ description: >-
 The user's instructions take precedence over this skill.
 
 Apply the `casquette-code-design` skill first; this skill adds only what is
-specific to Python. Like it, these rules apply to code you write or change.
-Where both are silent, follow the Google Python Style Guide.
+specific to Python. Where both are silent, follow the Google Python Style Guide.
 
 ## Tooling
 
@@ -47,8 +46,9 @@ is.
 - Data is a `@dataclass(frozen=True)`, or the project's model library.
 - Name modules after their responsibility, never `utils.py`, `helpers.py`,
   `common.py`, `manager.py` or `misc.py`.
-- A class may subclass a Protocol or ABC directly, but not a class that already
-  subclasses one.
+- A class may subclass a `Protocol` or an abstract base class (one that
+  derives from `abc.ABC`), but not a class that already subclasses one, so
+  each hierarchy stays one level below its interface.
 
 ### I/O and wiring
 
@@ -86,8 +86,8 @@ methods. These are signals, not limits.
 
 When one is crossed, check whether the unit still does one thing. If it
 does (a cohesive public API, a dispatch table, a long but linear
-procedure), keep it: leave the finding as it is, without `# noqa`, and name
-it in one line in your final reply. If it doesn't, and your change pushes it
+procedure), keep it: leave the finding as it is, without `# noqa`, and report it
+as `casquette-code-design`'s Reporting a change says. If it doesn't, and your change pushes it
 over, split it as preparatory refactoring; if the split isn't possible, name
 the finding in one line instead.
 
@@ -109,7 +109,7 @@ where the version allows it.
 
 ## Docstrings
 
-Google style (3.8), always `"""`. Which functions get one is set by
+Google style (section 3.8 of the style guide), always `"""`. Which functions get one is set by
 `casquette-code-design` (Scope of a change); among those, the check enforces
 public ones, and a non-obvious private one gets one too.
 

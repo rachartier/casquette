@@ -45,8 +45,8 @@ Write at least three in `evals/evals.json` before the body:
 Cover the main path, a follow-up turn, and a restraint case where the right
 result is no finding, change or question. A review's restraint case expects
 no finding without a concrete failure, since a fixture rarely has no real
-flaw. Write queries as a user would, with no hint of the answer. Each expected behavior must show in the transcript or
-the files.
+flaw. Write queries as a user would, with no hint of the answer. Each expected
+behavior must show in the transcript or the files.
 
 When a request asks for something a rule says to skip, expect the agent to do
 what was asked and note the rule in one line. An expected behavior that demands
@@ -107,8 +107,9 @@ for rules it looks up. End each step on a condition the model can check.
   it across the file instead of switching to a synonym such as "issue".
 - **Timeless.** No model names, dates or "new in" notes.
 
-Move reference that only some runs need into a file beside SKILL.md, linked from SKILL.md with the condition for reading it. Link one level deep.
-Add no README, changelog or empty folders.
+Move reference that only some runs need into a file beside SKILL.md, linked
+from SKILL.md with the condition for reading it. Link one level deep. Add no
+README, changelog or empty folders.
 
 For a bundled script: give its folder and exact command, say whether to run or
 read it, have it fail with a message saying what to do, and comment each
@@ -116,11 +117,10 @@ constant's reason.
 
 ## 5. Prune
 
-Review the finished skill and edit as you go:
+Apply section 4 to the finished skill, editing as you go, then:
 
-- Delete any sentence that changes no behavior, any meaning said twice (here
-  or in a skill it loads), and any step that re-checks the model's own work.
-- Give each step and term the rule that governs it nearby.
+- Delete any sentence that changes no behavior, and any meaning said twice
+  (here or in a skill it loads).
 - Remove any instruction that a literal reading would use to cut recall or add
   a pause the user doesn't want.
 - Resolve conflicts between instructions, here or with a loaded skill. Models

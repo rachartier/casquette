@@ -109,8 +109,7 @@ Prefer an existing library over writing your own when it:
   let them choose. Never use a package with no license.
 
 Check license and activity on the package index or the repository, not from
-memory. Prefer a library already in the dependency tree over a new one that
-does the same.
+memory.
 
 ## Reporting a change
 

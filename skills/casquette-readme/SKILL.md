@@ -102,7 +102,6 @@ flowchart LR
 ## Before delivering
 
 - Run or check every command and snippet against the repo.
-- Check every option in Configuration exists in the source with that default.
 - Check every link resolves.
 - Check the mermaid block parses
   (`npx -p @mermaid-js/mermaid-cli mmdc -i README.md -o <scratch>/out.md`, with

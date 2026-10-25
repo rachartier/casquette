@@ -23,8 +23,8 @@ comments so they read like a senior engineer wrote them.
 
 ## Checks
 
-The checks use ripgrep (`rg`); without it, run `grep -nEiw` with the same
-pattern.
+The checks use ripgrep (`rg`); without it, run `grep -nE` with the same
+pattern and flags.
 
 ```bash
 # Dashes used as punctuation (numeric ranges like 2019–2024 are fine)
@@ -37,8 +37,7 @@ rg -n '\S - ' <file>
 rg -n -i -w 'delve|tapestry|realm|landscape|testament to|navigate the complexities|at its core|ever-evolving|today.s fast-paced|leverage|utilize|robust|seamless|comprehensive|curated|elevate|unlock|supercharge|game-changer|cutting-edge|best-in-class|furthermore|moreover|additionally|that said|it.s worth noting|it.s important to note|crucial|vital|essential|powerful|key' <file>
 ```
 
-In code, also check that the diff changes only comment, docstring and message
-lines, then run the project's linter and tests.
+In code, also run the project's linter and tests.
 
 ## Em dashes
 
@@ -116,8 +115,8 @@ Leave alone: tool directives (`# noqa`, `# type: ignore`, `# pragma`,
 `# fmt: off`), license headers, shebangs, and `TODO`s with an owner or
 ticket.
 
-In commit messages, the subject says what changed and the body says why.
-Cut "This commit…", file-by-file lists and AI attribution lines.
+In commit messages, apply `casquette-commit`'s Message rules, and cut AI
+attribution lines.
 
 ## Structure to fix
 
@@ -153,14 +152,10 @@ Only the wording moves. Keep unchanged:
   jokes and unusual sentence rhythm
 
 Idiosyncrasy is not slop. When you can't tell whether something is the
-author's voice or a model's tic, leave it and flag it. When the text already
-reads as the author's own voice, make few or no edits and say so in the report.
-
-## Judgment
-
-When you can't rewrite a sentence without guessing at facts, leave it and
-say so in the report. A slightly stilted true sentence beats a smooth
-invented one.
+author's voice or a model's tic, or can't rewrite a sentence without guessing
+at facts, leave it and flag it: a slightly stilted true sentence beats a
+smooth invented one. When the text already reads as the author's own voice,
+make few or no edits and say so in the report.
 
 ## Output
 

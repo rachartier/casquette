@@ -48,18 +48,14 @@ The first call for a directory pulls the image and runs `postCreateCommand`: all
 
 ## Recreating
 
-`--recreate` destroys the container and creates a new one from the current `devcontainer.json`. `--rebuild` does the same and also rebuilds a Dockerfile-based image without the build cache. Use either only when `devcontainer.json` or the capsule mounts changed, the image is stale, or the container is broken. Both wipe all installed state, so get the user's agreement first. Put it before `--`: `capsule exec -q --recreate -- true`.
+`--recreate` destroys the container and creates a new one from the current `devcontainer.json`. `--rebuild` does the same and also rebuilds a Dockerfile-based image without the build cache. Use either only when `devcontainer.json` or the capsule mounts changed, a Dockerfile image's cached layers are stale (an old `apt-get update`, a moved `git clone`), or the container is broken. Both wipe all installed state, so get the user's agreement first. Put it before `--`: `capsule exec -q --recreate -- true`.
 
 ## Stay non-interactive
 
-Commands that wait for input hang the call, so run one-shot forms. `capsule run` opens an interactive shell; leave it for the user.
-
-## Cleanup
-
-Leave the container running between calls; reuse is the point. When the user wants it gone, run `capsule stop` (stop) or `capsule stop --force` (remove) from the same directory. `capsule ps` lists every capsule container.
+Commands that wait for input hang the call, so run one-shot forms. Leave the container running between calls; reuse is the point.
 
 ## Failures
 
-- `devcontainer CLI not found`: the user must install it (`npm install -g @devcontainers/cli`).
+- `devcontainer CLI not found`, or any other setup problem: follow "First-time setup" in the `casquette-capsule` skill.
 - `No .devcontainer/devcontainer.json found and no template name given`: pass a template name, or set the project up with the `casquette-capsule` skill.
-- `devcontainer up failed`: read the printed log. Common causes are a bad `devcontainer.json`, a failing `postCreateCommand`, or a stopped container runtime. `capsule doctor` checks the runtime and every template.
+- `devcontainer up failed`: read the printed log. Common causes are a bad `devcontainer.json`, a failing `postCreateCommand`, or a stopped container runtime.

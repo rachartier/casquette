@@ -28,5 +28,15 @@
       "Flags in one sentence that returning None trades Fail Fast for a silent default",
       "Reports the neighbouring issues in one line each instead of fixing them"
     ]
+  },
+  {
+    "skills": ["casquette-code-design"],
+    "query": "Rename the variable tmp to subtotal in compute_invoice.",
+    "files": ["A module with compute_invoice, which has no docstring or annotations and a local variable tmp used three times, and tests for it"],
+    "expected_behavior": [
+      "Renames every use of tmp in compute_invoice to subtotal",
+      "Adds no docstring, annotation or comment, and changes no other line",
+      "Runs the linter, type checker and related tests once"
+    ]
   }
 ]

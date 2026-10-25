@@ -68,7 +68,9 @@ Set a description so `capsule list` explains the template: `capsule meta <t> --d
 
 Precedence: `capsule run <t>` with a name uses the stored template even when `.devcontainer/` exists; `capsule exec` never does (see `casquette-capsule-exec`).
 
-**Apply changes.** An existing container keeps its old settings. After a change to `devcontainer.json` or to the mounts in `config.toml`, the container must be recreated: `capsule run --recreate` (the user) or `capsule exec -q --recreate [t] -- true` (you). Recreating destroys everything installed in the container, so confirm with the user first. For a Dockerfile template whose cached layers are stale (an old `apt-get update`, a moved `git clone`), use `--rebuild` instead: it also rebuilds the image without the build cache.
+**Apply changes.** An existing container keeps its old settings. After a change to `devcontainer.json` or to the mounts in `config.toml`, the container must be recreated: the user runs `capsule run --recreate`, or you follow "Recreating" in the `casquette-capsule-exec` skill.
+
+**Remove a container.** When the user wants it gone, run `capsule stop` (stop) or `capsule stop --force` (remove) from the project directory. `capsule ps` lists every capsule container.
 
 ## Global config
 

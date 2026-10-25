@@ -73,9 +73,9 @@ npx skills add rachartier/casquette -g --skill casquette-code-design --skill cas
 > - `casquette-python-setup` uses `casquette-capsule` for a devcontainer when capsule is installed, and offers `casquette-python-audit` on an existing project
 > - `casquette-python-audit` uses `casquette-python` and `casquette-python-setup`
 > - `casquette-review` uses `casquette-code-design` and the language's skill (`casquette-python`)
-> - `casquette-deslop` uses `casquette-code-design` for code comments
+> - `casquette-deslop` uses `casquette-code-design` for code comments and `casquette-commit` for commit messages
 > - `casquette-readme` uses `casquette-deslop`'s word checks
-> - `casquette-capsule-exec` uses `casquette-capsule` to install capsule
+> - `casquette-capsule-exec` and `casquette-capsule` use each other: one to install and set up capsule, the other to run and recreate containers
 
 Without the CLI, clone the repo and link the skills into your agent's skills
 folder:

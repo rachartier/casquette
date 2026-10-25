@@ -110,8 +110,8 @@ reproducible builds and has Renovate or Dependabot to bump it.
 
 ## Language gotchas
 
-- **Node:** run `node dist/index.js`, not `npm start`. Production
-  dependencies come from a separate `npm ci --omit=dev` stage.
+- **Node:** run `node dist/index.js`, not `npm start`. The
+  production-dependencies stage runs `npm ci --omit=dev`.
 - **Python:** keep the virtualenv at the same path in both stages, on the same
   Python image; its scripts use absolute paths. With uv, run `uv sync --locked
   --no-install-project` before copying the source so the dependency layer
@@ -137,9 +137,8 @@ docker history --no-trunc app:check                   # no secret, token or sour
 docker run -d --rm --name app-check -p <port>:<port> app:check
 curl -fsS --retry 5 --retry-connrefused localhost:<port>/  # serves (or the service's own probe)
 time docker stop app-check                            # stops in seconds, not after the 10s timeout
+docker image rm app:check                             # cleanup
 ```
 
 The last three checks (`docker run`, `curl`, `docker stop`) apply only to an
-image that serves a port. For a CLI or batch image, skip them and say so.
-
-If Docker is not available, say so and list the checks you skipped.
+image that serves a port; skip them for a CLI or batch image.
