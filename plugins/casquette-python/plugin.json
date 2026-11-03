@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "casquette-python",
   "description": "Python rules, project setup and audit, plus the code-design and review skills they build on.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": {
     "name": "Raphaël Chartier"
   },
