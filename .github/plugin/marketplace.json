@@ -1,0 +1,17 @@
+{
+  "name": "casquette",
+  "owner": {
+    "name": "Raphaël Chartier"
+  },
+  "metadata": {
+    "description": "Agent skills for plain Python, devcontainers, commits and reviews."
+  },
+  "plugins": [
+    {
+      "name": "casquette",
+      "description": "Agent skills for writing plain Python, running work in devcontainers, and committing, reviewing and documenting code.",
+      "version": "0.1.0",
+      "source": "./"
+    }
+  ]
+}

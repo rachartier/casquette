@@ -53,6 +53,17 @@ writing docs without filler.
 
 ## Installation
 
+### Copilot CLI plugin
+
+Install every skill as one plugin from this repo's marketplace:
+
+```sh
+copilot plugin marketplace add rachartier/casquette
+copilot plugin install casquette@casquette
+```
+
+### Skills CLI
+
 Install every skill for your user with the
 [skills](https://github.com/vercel-labs/skills) CLI. Drop `-g` to install
 into the current project.

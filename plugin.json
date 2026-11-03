@@ -1,0 +1,13 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "casquette",
+  "description": "Agent skills for writing plain Python, running work in devcontainers, and committing, reviewing and documenting code.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Raphaël Chartier"
+  },
+  "homepage": "https://github.com/rachartier/casquette",
+  "repository": "https://github.com/rachartier/casquette",
+  "license": "MIT",
+  "keywords": ["skills", "python", "devcontainer", "code-review", "commit"]
+}
