@@ -26,7 +26,7 @@ jobs:
           BEFORE: ${{ github.event.before }}
         run: |
           messages=$(git log --format=%B "$BEFORE..HEAD")
-          current=$(jq -r .version plugin.json)
+          current=$(jq -r .version plugins/casquette/plugin.json)
           IFS=. read -r major minor patch <<<"$current"
 
           # Below 1.0 a breaking change bumps the minor, like a feature.
@@ -40,7 +40,7 @@ jobs:
           fi
           version="$major.$minor.$patch"
 
-          sed -i -E "s/(\"version\": \")[^\"]*/\1$version/" plugin.json .github/plugin/marketplace.json
+          sed -i -E "s/(\"version\": \")[^\"]*/\1$version/" plugins/*/plugin.json .github/plugin/marketplace.json
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Commit, tag and release

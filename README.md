@@ -55,12 +55,18 @@ writing docs without filler.
 
 ### Copilot CLI plugin
 
-Install every skill as one plugin from this repo's marketplace:
+Install from this repo's marketplace. `casquette-python` holds the Python
+skills with `casquette-code-design` and `casquette-review`; `casquette` holds
+the other seven. Install both for every skill:
 
 ```sh
 copilot plugin marketplace add rachartier/casquette
+copilot plugin install casquette-python@casquette
 copilot plugin install casquette@casquette
 ```
+
+`casquette-deslop` uses `casquette-code-design` for code comments, so install
+`casquette-python` with `casquette`.
 
 ### Skills CLI
 
@@ -97,7 +103,7 @@ folder:
 skills_dir=~/.agents/skills  # your agent's skills folder
 git clone https://github.com/rachartier/casquette.git
 mkdir -p "$skills_dir"
-for skill in casquette/skills/*/; do
+for skill in casquette/plugins/*/skills/*/; do
     ln -s "$PWD/$skill" "$skills_dir/"
 done
 ```
@@ -120,6 +126,6 @@ Use the casquette-readme skill to rewrite README.md.
 ## Python tooling defaults
 
 `casquette-python-setup` writes its ruff, ty and pytest defaults from
-[`templates/pyproject.toml`](skills/casquette-python-setup/templates/pyproject.toml)
+[`templates/pyproject.toml`](plugins/casquette-python/skills/casquette-python-setup/templates/pyproject.toml)
 and its hooks from
-[`templates/pre-commit-config.yaml`](skills/casquette-python-setup/templates/pre-commit-config.yaml).
+[`templates/pre-commit-config.yaml`](plugins/casquette-python/skills/casquette-python-setup/templates/pre-commit-config.yaml).

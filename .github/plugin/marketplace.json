@@ -8,10 +8,16 @@
   },
   "plugins": [
     {
-      "name": "casquette",
-      "description": "Agent skills for writing plain Python, running work in devcontainers, and committing, reviewing and documenting code.",
+      "name": "casquette-python",
+      "description": "Python rules, project setup and audit, plus the code-design and review skills they build on.",
       "version": "0.2.0",
-      "source": "./"
+      "source": "./plugins/casquette-python"
+    },
+    {
+      "name": "casquette",
+      "description": "Agent skills for devcontainers, Dockerfiles, commits, READMEs, text cleanup and skill writing.",
+      "version": "0.2.0",
+      "source": "./plugins/casquette"
     }
   ]
 }
