@@ -1,0 +1,56 @@
+name: release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency: release
+
+jobs:
+  release:
+    # The bump commit is pushed with GITHUB_TOKEN, which does not retrigger
+    # workflows; this guard keeps that true if the token ever changes.
+    if: ${{ !startsWith(github.event.head_commit.message, 'chore(release)') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Bump version
+        id: bump
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          messages=$(git log --format=%B "$BEFORE..HEAD")
+          current=$(jq -r .version plugin.json)
+          IFS=. read -r major minor patch <<<"$current"
+
+          # Below 1.0 a breaking change bumps the minor, like a feature.
+          breaking='^[a-z]+(\(.+\))?!:|^BREAKING CHANGE'
+          if grep -qE "$breaking" <<<"$messages" && ((major > 0)); then
+            major=$((major + 1)); minor=0; patch=0
+          elif grep -qE "$breaking|^feat(\(.+\))?:" <<<"$messages"; then
+            minor=$((minor + 1)); patch=0
+          else
+            patch=$((patch + 1))
+          fi
+          version="$major.$minor.$patch"
+
+          sed -i -E "s/(\"version\": \")[^\"]*/\1$version/" plugin.json .github/plugin/marketplace.json
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Commit, tag and release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.bump.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "chore(release): v$VERSION"
+          git tag "v$VERSION"
+          git push origin HEAD "v$VERSION"
+          gh release create "v$VERSION" --generate-notes
