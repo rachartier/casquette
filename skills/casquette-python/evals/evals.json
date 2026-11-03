@@ -13,6 +13,17 @@
   },
   {
     "skills": ["casquette-python"],
+    "query": "Add a function that totals the orders in a CSV file.",
+    "files": ["A src-layout Python project with a .venv, ruff, ty and pytest installed in it, on a machine with pipx but no uv"],
+    "expected_behavior": [
+      "Does not ask the user to install uv and does not run uv or uvx",
+      "Runs scripts/check.sh on the changed files, which uses the venv's ruff",
+      "Runs the type checker as <venv-bin>/ty or `pipx run ty check`, and tests with <venv-bin>/pytest, where <venv-bin> is .venv/bin on Linux and .venv/Scripts on Windows",
+      "Installs any new dependency inside .venv, never with a bare pip install"
+    ]
+  },
+  {
+    "skills": ["casquette-python"],
     "query": "Have the total fetch its orders from an HTTP API instead of taking rows.",
     "files": ["A src-layout Python project with requires-python >=3.12, ruff and ty configured, and an orders.py that already has a frozen Order dataclass and total(rows: Sequence[Order]) -> Decimal, with a docstring and a passing test"],
     "expected_behavior": [

@@ -17,6 +17,16 @@ specific to Python. Where both are silent, follow the Google Python Style Guide.
 Use uv unless the project uses another tool or you're told otherwise:
 `uv add` for dependencies, `uv add --dev` for tooling.
 
+When `uv` isn't on the PATH, don't ask the user to install it: use the
+project's `.venv` with pip. Create it with `python3 -m venv .venv` (`py -3 -m
+venv .venv` on Windows) if missing, add dependencies to `pyproject.toml` and
+install them with `<venv-bin>/python -m pip install -e . --group dev`
+(`--group` needs pip 25.1; upgrade pip inside the venv first). `<venv-bin>` is
+`.venv/bin` on Linux and macOS and `.venv/Scripts` on Windows. Run tools as
+`<venv-bin>/<tool>` in place of `uv run <tool>`, and one-off tools with
+`pipx run <tool>` in place of `uvx <tool>`. Never `pip install` outside a
+venv.
+
 After the last edit, run these as the final step, in this order. The rerun
 rule is in `casquette-code-design`'s Done section.
 
@@ -25,14 +35,16 @@ rule is in `casquette-code-design`'s Done section.
 2. Run `<skill>/scripts/check.sh <changed files>`, where `<skill>` is the folder
    holding this SKILL.md: one ruff run with the project's rules plus this
    skill's annotation, docstring, modernization, ignore-comment and size rules.
-   The script runs ruff through uv; in a project that uses another tool, run
+   The script runs ruff through uv, else the project's `.venv`, ruff on the
+   PATH, or `pipx run`; in a project that uses another tool, run
    the same `ruff check` options through that tool (the script lists them).
 3. Run the type checker that `pyproject.toml` configures (`[tool.ty]`,
    `[tool.mypy]` or `[tool.pyright]`); when it configures none, run
-   `uvx ty check --output-format concise`.
+   `uvx ty check --output-format concise` (`pipx run ty check
+   --output-format concise` without uv).
 4. Run the tests for the changed modules, for example
-   `uv run pytest tests/test_orders.py`; run `uv run pytest` alone when unsure
-   which tests those are.
+   `uv run pytest tests/test_orders.py` (`<venv-bin>/pytest` without uv); run
+   all tests when unsure which those are.
 
 Fix every finding on a line you wrote or changed, except a kept size signal
 (see Size signals). Leave findings on lines you didn't touch.

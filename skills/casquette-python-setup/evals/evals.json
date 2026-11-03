@@ -14,6 +14,30 @@
   },
   {
     "skills": ["casquette-python-setup"],
+    "query": "Start a new Python project called invoices.",
+    "files": ["An empty directory on a machine with python3, pip and pipx but no uv"],
+    "expected_behavior": [
+      "Does not ask the user to install uv and does not run uv or uvx",
+      "Writes pyproject.toml by hand with a hatchling build-system and a dev dependency group holding ruff, ty and pytest, and creates src/invoices/__init__.py",
+      "Creates .venv with python3 -m venv and installs with `.venv/bin/python -m pip install -e . --group dev` after upgrading pip",
+      "Appends templates/pyproject.toml, and copies the pre-commit template with `uv run ` replaced by `.venv/bin/`",
+      "Runs `pipx run pre-commit install`",
+      "Verifies with .venv/bin/ruff check, .venv/bin/ruff format --check, .venv/bin/ty check and .venv/bin/pytest"
+    ]
+  },
+  {
+    "skills": ["casquette-python-setup"],
+    "query": "Start a new Python project called invoices.",
+    "files": ["An empty directory on Windows with python, pip and pipx but no uv"],
+    "expected_behavior": [
+      "Does not ask the user to install uv and does not run uv or uvx",
+      "Creates .venv with `py -3 -m venv .venv` or `python -m venv .venv`, not python3",
+      "Installs and runs every tool from .venv/Scripts, never .venv/bin",
+      "Copies the pre-commit template with `uv run ` replaced by `.venv/Scripts/`"
+    ]
+  },
+  {
+    "skills": ["casquette-python-setup"],
     "query": "Yes, give it a devcontainer.",
     "files": ["The invoices project from the previous turn, on a machine where capsule is installed"],
     "expected_behavior": [

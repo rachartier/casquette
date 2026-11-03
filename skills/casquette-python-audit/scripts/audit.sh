@@ -5,7 +5,7 @@
 # A tool uses the project's configuration when the project has one, and the
 # defaults in this skill's assets/ folder (or the tool's own) otherwise. Ruff
 # also adds the bug rules in BASELINE_RULES to a project's own config. Tools
-# come from the project's .venv first, then the PATH, then uvx.
+# come from the project's .venv first, then the PATH, then uvx (or pipx run).
 #
 # Usage: audit.sh [--changed | --base REF] [TOOL...]
 #   TOOL is any of: lint format types complexity deadcode duplicates security tests
@@ -23,6 +23,9 @@ EXCLUDED="tests,test,.venv,venv,build,dist"
 BASELINE_RULES="F,E9,B,PLE,PLW,BLE"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
+# Git Bash on Windows has python but no python3.
+PYTHON=python3
+command -v python3 >/dev/null || PYTHON=python
 export PYTHONDONTWRITEBYTECODE=1 COVERAGE_FILE="$TMP/.coverage"
 
 targets=()
@@ -66,8 +69,11 @@ has_config() {  # tool_name file...
 
 tool() {  # name -> the command to run it
   if [[ -x ".venv/bin/$1" ]]; then echo ".venv/bin/$1"
+  elif [[ -x ".venv/Scripts/$1.exe" ]]; then echo ".venv/Scripts/$1.exe"
   elif command -v "$1" >/dev/null; then echo "$1"
-  else echo "uvx $1"
+  elif command -v uvx >/dev/null; then echo "uvx $1"
+  elif command -v pipx >/dev/null; then echo "pipx run $1"
+  else echo "No $1, uvx or pipx found: install $1 into .venv with pip." >&2; echo "$1"
   fi
 }
 
@@ -94,7 +100,7 @@ run() {  # title command...
 }
 
 project_ruff_ignores() {  # -> the project's ruff ignore list, comma-separated
-  python3 - <<'EOF'
+  "$PYTHON" - <<'EOF'
 import tomllib
 from pathlib import Path
 
@@ -182,15 +188,23 @@ security() {
 
 tests() {
   local runner
-  if [[ -f uv.lock ]] || has_config uv; then
+  if command -v uv >/dev/null && { [[ -f uv.lock ]] || has_config uv; }; then
     runner=(uv run --with pytest-cov pytest)
   elif [[ -f poetry.lock ]] && command -v poetry >/dev/null; then
     runner=(poetry run pytest)
   elif [[ -x .venv/bin/python ]] && .venv/bin/python -c "import pytest_cov" 2>/dev/null; then
     runner=(.venv/bin/python -m pytest)
-  else
+  elif [[ -x .venv/Scripts/python.exe ]] && .venv/Scripts/python.exe -c "import pytest_cov" 2>/dev/null; then
+    runner=(.venv/Scripts/python.exe -m pytest)
+  elif command -v uv >/dev/null; then
     # A throwaway environment with the project installed; creates no .venv.
     runner=(uv run --no-project --with-editable . --with pytest --with pytest-cov pytest)
+  else
+    local venv_python="$TMP/venv/bin/python"
+    "$PYTHON" -m venv "$TMP/venv"
+    [[ -d "$TMP/venv/Scripts" ]] && venv_python="$TMP/venv/Scripts/python.exe"
+    "$venv_python" -m pip install -q -e . pytest pytest-cov >&2
+    runner=("$venv_python" -m pytest)
   fi
   run "tests: pytest with coverage" "${runner[@]}" -q -p no:cacheprovider --tb=line \
     --cov=. --cov-report=term-missing:skip-covered

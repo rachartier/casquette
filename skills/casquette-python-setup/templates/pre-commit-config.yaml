@@ -1,4 +1,5 @@
 # Hooks run the project's locked tools through uv, so they match `uv run`.
+# Without uv, replace each `uv run ` with `.venv/bin/` (`.venv/Scripts/` on Windows).
 repos:
   - repo: local
     hooks:

@@ -40,6 +40,30 @@ only: it changes no source code and reports no lint, type or test findings.
    }
    ```
 
+### Without uv
+
+When `uv` isn't on the PATH, don't ask the user to install it; use pip and
+pipx. `<venv-bin>` below is `.venv/bin` on Linux and macOS and
+`.venv/Scripts` on Windows. Replace steps 1, 2 and 4 with:
+
+1. `git init`, then write `pyproject.toml` with `[project]` (`name`, `version`
+   `0.1.0`, `requires-python = ">=3.12"` or the version the user names),
+   `[build-system]` (`hatchling`) and
+   `[dependency-groups] dev = ["ruff", "ty", "pytest"]`. Create
+   `src/<name>/__init__.py`.
+2. `python3 -m venv .venv` (`py -3 -m venv .venv` on Windows), then
+   `<venv-bin>/python -m pip install -U pip` (the `--group` option needs pip
+   25.1) and `<venv-bin>/python -m pip install -e . --group dev`.
+4. Copy the pre-commit template with each `uv run ` in it replaced by
+   `<venv-bin>/`, then `pipx run pre-commit install`. With no pipx, add
+   `pre-commit` to the dev group, reinstall, and run
+   `<venv-bin>/pre-commit install`.
+
+Steps 3 and 5 are unchanged. In every command below and in Done, run tools as
+`<venv-bin>/<tool>` in place of `uv run <tool>`, `uvx <tool>` as `pipx run
+<tool>`, and add dev dependencies to the dev group, then reinstall, in place
+of `uv add --dev`.
+
 ## Updating an existing project
 
 1. Read the project's ruff, ty and pytest config (`pyproject.toml` or
