@@ -15,7 +15,7 @@ writing docs without filler.
 | --- | --- |
 | `casquette-code-design` | Apply design, scope and test rules to any code change, and run the checks that finish it. |
 | `casquette-python` | Write, edit or review Python: structure, typing, docstrings, spacing. Builds on `casquette-code-design`. |
-| `casquette-python-setup` | Set up a Python project with uv (or pip and pipx), ruff, ty, pytest and pre-commit, or update an existing one's config. |
+| `casquette-python-setup` | Set up a Python project with uv, ruff, ty, pytest and pre-commit, or update an existing one's config. |
 | `casquette-python-audit` | Audit a Python project with its tools, then pick which findings to fix. |
 | `casquette-review` | Review a change in any language against `casquette-code-design`, then pick which findings to fix. |
 
@@ -43,10 +43,8 @@ writing docs without filler.
 
 ## Requirements
 
-- Python skills: [uv](https://docs.astral.sh/uv/), or without it Python 3.12+
-  with pip and [pipx](https://pipx.pypa.io/) (Linux, macOS and Windows).
-  `casquette-python`'s `check.sh` and `casquette-python-audit` also need bash
-  (Git Bash on Windows); the audit also needs git and Python 3.11+.
+- Python skills: [uv](https://docs.astral.sh/uv/).
+  `casquette-python-audit` also needs bash, git and Python 3.11+.
 - Container skills: [capsule](https://github.com/rachartier/capsule), the
   [devcontainer CLI](https://github.com/devcontainers/cli), and Docker or
   Podman. `casquette-dockerfile` needs only Docker.
