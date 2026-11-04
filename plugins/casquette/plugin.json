@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "casquette",
   "description": "Agent skills for devcontainers, Dockerfiles, commits, READMEs, text cleanup and skill writing.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": {
     "name": "Raphaël Chartier"
   },
